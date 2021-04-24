@@ -5,22 +5,21 @@ import { WButton, WNavItem }                from 'wt-frontend';
 
 const LoggedIn = (props) => {
     const client = useApolloClient();
-    const username = props.name;
 	const [Logout] = useMutation(LOGOUT);
     const handleLogout = async (e) => {
         Logout();
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
-            if (reset) props.setActiveList({});
+            // if (reset) props.setActiveList({});
         }
     };
 
     return (
         <>
         <WNavItem hoverAnimation="lighten">
-            <WButton className="navbar-name" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
-                {`${username}`}
+            <WButton className="navbar-name" onClick={props.setShowUpdate} wType="texted" hoverAnimation="text-primary">
+                {`${props.user.name}`}
             </WButton>
         </WNavItem>
         <WNavItem hoverAnimation="lighten">
@@ -56,7 +55,7 @@ const NavbarOptions = (props) => {
         <>
             {
                 props.auth === false ? <LoggedOut setShowLogin={props.setShowLogin} setShowCreate={props.setShowCreate} />
-                : <LoggedIn fetchUser={props.fetchUser} setActiveList={props.setActiveList} logout={props.logout } name={props.name}/>
+                : <LoggedIn fetchUser={props.fetchUser} setActiveList={props.setActiveList} logout={props.logout } user={props.user} setShowUpdate={props.setShowUpdate}/>
             }
         </>
 

@@ -44,8 +44,8 @@ const CreateAccount = (props) => {
         // Replace div with WModal
 
 		<WModal className="signup-modal" visible={true}>
-			<WMHeader className="modal-header" onClose={() => props.setShowCreate(false)}>
-				Create a New Account
+			<WMHeader className="modal-header" onClose={() => props.setShowUpdate(false)}>
+				Enter Updated Account Information
 			</WMHeader>
 
 			{
@@ -61,7 +61,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
-									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" 
+									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" value={props.user.name} 
 								/>
 							</WCol>
 						</WRow>
@@ -76,7 +76,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" 
+								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" value={props.user.email}
 								/>
 							</WCol>
 						</WRow>
@@ -91,7 +91,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-								barAnimation="solid" labelText="*Enter Password Here*" wType="outlined" inputType="password" 
+								barAnimation="solid" labelText="*Enter Password Here*" wType="outlined" inputType="password"
 								/>
 							</WCol>
 						</WRow>
@@ -102,11 +102,11 @@ const CreateAccount = (props) => {
 							<WCol size="2" ></WCol>
 							<WCol size="4" >
 							<WButton className="modal-button" onClick={handleCreateAccount} span clickAnimation="ripple-light" hoverAnimation="darken" shape="default" color="primary">
-								Create Account
+								Update Account
 							</WButton>
 							</WCol>
 							<WCol size="4" >
-							<WButton className="modal-button" onClick={() => props.setShowCreate(false)} span clickAnimation="ripple-light" hoverAnimation="darken" shape="default" color="primary">
+							<WButton className="modal-button" onClick={() => props.setShowUpdate(false)} span clickAnimation="ripple-light" hoverAnimation="darken" shape="default" color="primary">
 								Cancel
 							</WButton>
 							</WCol>
