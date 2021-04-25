@@ -26,6 +26,12 @@ export const LOGOUT = gql`
 	}
 `;
 
+export const ADD_MAP = gql`
+	mutation AddMap($map: MapInput!) {
+		addMap(map: $map) 
+	}
+`;
+
 export const ADD_ITEM = gql`
 	mutation AddItem($item: ItemInput!, $_id: String!, $index: Int!) {
 		addItem(item: $item, _id: $_id, index: $index)

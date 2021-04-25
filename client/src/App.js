@@ -48,7 +48,7 @@ const App = () => {
 						name="maps" 
 						render={() => 
 							<WLMain>
-								<Maps/>
+								<Maps user={user}/>
 							</WLMain>
 						} />
 

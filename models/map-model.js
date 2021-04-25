@@ -1,7 +1,6 @@
 const { model, Schema, ObjectId } = require('mongoose');
-const Item = require('./item-model').schema;
 
-const todolistSchema = new Schema(
+const mapSchema = new Schema(
 	{
 		_id: {
 			type: ObjectId,
@@ -19,10 +18,9 @@ const todolistSchema = new Schema(
 			type: String,
 			required: true
 		},
-		items: [Item],
 	},
 	{ timestamps: true }
 );
 
-const Todolist = model('Todolist', todolistSchema);
-module.exports = Todolist;
+const Map = model('Map', mapSchema);
+module.exports = Map;
