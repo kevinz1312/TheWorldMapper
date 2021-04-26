@@ -38,7 +38,29 @@ module.exports = {
 			const updated = newList.save();
 			if(updated) return objectId;
 			else return ('Could not add map');
-		}
+		},
+		/** 
+		 	@param 	 {object} args - a map objectID 
+			@returns {boolean} true on successful delete, false on failure
+		**/
+		deleteMap: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const deleted = await Map.deleteOne({_id: objectId});
+			if(deleted) return true;
+			else return false;
+		},
+		/** 
+		 	@param 	 {object} args - a Map objectID, field, and the update value
+			@returns {boolean} true on successful update, false on failure
+		**/
+		updateMapField: async (_, args) => {
+			const { field, value, _id } = args;
+			const objectId = new ObjectId(_id);
+			const updated = await Map.updateOne({_id: objectId}, {[field]: value});
+			if(updated) return value;
+			else return "";
+		},
     }
 
 }

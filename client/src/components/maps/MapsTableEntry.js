@@ -1,4 +1,4 @@
-import { WNavItem, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import { WNavItem, WButton, WRow, WCol } from 'wt-frontend';
 
 
 const MapsTableEntry = (props) => {
@@ -18,10 +18,10 @@ const MapsTableEntry = (props) => {
         <WCol size="2">
             <div className='button-group'>
                 <WButton className="map-table-buttons" >
-                    <i className="material-icons" style={{ fontSize: 30 }}>edit</i>
+                    <i className="material-icons" style={{ fontSize: 30 }} onClick={() => props.updateMap(props._id, props.name)} >edit</i>
                 </WButton>
                 <WButton className="map-table-buttons">
-                    <i className="material-icons" style={{ fontSize: 30 }}>delete</i>
+                    <i className="material-icons" style={{ fontSize: 30 }} onClick={() => props.deleteMap(props._id, props.name)} >delete</i>
                 </WButton>
                 </div>
             </WCol>

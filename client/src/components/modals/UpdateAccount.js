@@ -61,7 +61,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
-									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" value={props.user.name} 
+									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" defaultValue={props.user.name} 
 								/>
 							</WCol>
 						</WRow>
@@ -76,7 +76,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" value={props.user.email}
+								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" defaultValue={props.user.email}
 								/>
 							</WCol>
 						</WRow>

@@ -10,11 +10,21 @@ import * as mutations 					from '../../cache/mutations';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { GET_DB_MAPS } 				from '../../cache/queries';
 import CreateMap 							from '../modals/CreateMap';
+import DeleteMapModal 							from '../modals/DeleteMapModal';
+import UpdateMapModal 							from '../modals/UpdateMapModal';
 
 const Maps = (props) => {
     let maps 							= [];
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
+    const [DeleteMap] 			= useMutation(mutations.DELETE_MAP);
+	const [UpdateMapField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
+
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	const [showDelete, toggleShowDelete] 	= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
+    const [currentMapId, updateMapId] = useState(0);
+    const [currentMapName, updateMapName] = useState("");
+
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 	if(loading) { console.log(loading, 'loading'); }
@@ -35,6 +45,16 @@ const Maps = (props) => {
 		await refetchMaps(refetch);
 	}
 
+	const deleteMap = async (_id) => {
+			DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+			refetch();
+	}
+
+	const updateMapField = async (_id, field, value, prev) => {
+		if(value !== prev){
+            UpdateMapField({ variables: { _id: _id, field: field, value: value }, refetchQueries: [{ query: GET_DB_MAPS }] })
+		}
+	};
 
     const refetchMaps = async (refetch) => {
 		const { loading, error, data } = await refetch();
@@ -43,10 +63,28 @@ const Maps = (props) => {
 		}
 	}
 
+    const setCurrentMapId = (_id) =>{
+        updateMapId(_id);
+    }
+
+    const setCurrentMapName= (name) =>{
+        updateMapName(name);
+    }
 	const setShowCreate = () => {
+        toggleShowDelete(false);
 		toggleShowCreate(!showCreate);
 	};
 
+	const setShowDelete = () => {
+		toggleShowCreate(false);
+        toggleShowDelete(!showDelete);
+	}
+
+	const setShowUpdate = () => {
+		toggleShowCreate(false);
+        toggleShowDelete(false);
+        toggleShowUpdate(!showUpdate);
+	}
     return (
          <div class="centered">
              <WCHeader style={{ backgroundColor: "red", height: "25px", width: "800px" }} class="maps-header-text center">Your Maps</WCHeader>
@@ -54,7 +92,7 @@ const Maps = (props) => {
              <WCContent style={{ backgroundColor: "lightpink", height: "400px"}}>
                 <WRow>
                     <WCol size="6" style={{height:"400px"}}>
-                        <MapsTable maps={maps}/>
+                        <MapsTable maps={maps} deleteMap={deleteMap} setCurrentMapId={setCurrentMapId} setCurrentMapName={setCurrentMapName }setShowDelete={setShowDelete} setShowUpdate={setShowUpdate}/>
                     </WCol>
                     <WCol size="6" style={{backgroundColor: "white", height: "400px"}}>
                     <img src={globe} style={{height:"363px"}} class="center"/>
@@ -64,8 +102,14 @@ const Maps = (props) => {
                     </WCol>
                 </WRow>
              </WCContent>
-             {
-				showCreate && (<CreateMap createNewMap={createNewMap} setShowCreate={setShowCreate} />)
+            {
+				showCreate && (<CreateMap createNewMap={createNewMap} setShowCreate={setShowCreate}/>)
+			}
+            {
+				showDelete && (<DeleteMapModal deleteMap={deleteMap} currentMapId={currentMapId} setShowDelete={setShowDelete} />)
+			}
+            {
+				showUpdate && (<UpdateMapModal updateMapField={updateMapField} currentMapId={currentMapId} currentMapName={currentMapName} setShowUpdate={setShowUpdate}/>)
 			}
         </div>
     );
