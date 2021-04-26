@@ -27,13 +27,13 @@
     --light-orange: #f5bc75;
     --light-blue: #8ed4f8;
     --light-purple: #dbbdf9;
-    --light-pink: #fbb4d2;
+    --light-pink: #ffb6c1;
     --light-yellow: #e6db74;
     --light-beige: #d9d6cc;
     --light-gray: #e9edf0;
 	--bright-orange: #fca234;
 	--yellow-orange: #ffc800;
-    --hover-light: rgba(255,255,255, 0.7);
+    --hover-light: rgba(255,255,255, 0.15);
     --deep-blue:  rgb(64, 69, 78);
     --deep-blue-lighter:  rgb(87, 93, 105);
     /* --deep-blue:  #282c34; */
@@ -43,7 +43,6 @@
 	--blue-gray: #7e8084;
 	--darkblue-gray: #2b2e36;
     --warm-black: #322d2d;
-    --hover-light: rgba(255,255,255, 0.7);
     --pink: rgb(214, 102, 190)
 }
 
@@ -214,6 +213,14 @@ html, body {
 
 .undo-redo {
     color: $text-color;
+}
+
+.map-table-buttons{
+    background-color: var(--light-pink);
+}
+
+.map-table-buttons:hover{
+    background-color: var(--hover-light);
 }
 
 .table-entry-buttons {

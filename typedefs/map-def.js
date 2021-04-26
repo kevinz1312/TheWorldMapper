@@ -14,6 +14,12 @@ const typeDefs = gql `
 		name: String
 		owner: String
 	}
+	extend type Query {
+		getAllMaps: [Map]
+	}
+	extend type Mutation {
+		addMap(map: MapInput!): String
+	}
 `;
 
 module.exports = { typeDefs: typeDefs }
