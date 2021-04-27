@@ -27,7 +27,6 @@ const CreateAccount = (props) => {
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
-			console.log(data)
 			toggleLoading(false);
 			if(data.register.email === 'already exists') {
 				alert('User with that email already registered');

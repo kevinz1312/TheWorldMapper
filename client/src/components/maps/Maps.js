@@ -5,7 +5,7 @@ import WCHeader from "wt-frontend/build/components/wcard/WCHeader";
 import WCol from "wt-frontend/build/components/wgrid/WCol";
 import globe from '../../images/globe.png';
 import MapsTable from "./MapsTable";
-import React, { useState } 	from 'react';
+import React, { useEffect, useState } 	from 'react';
 import * as mutations 					from '../../cache/mutations';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { GET_DB_MAPS } 				from '../../cache/queries';
@@ -71,11 +71,13 @@ const Maps = (props) => {
         updateMapName(name);
     }
 	const setShowCreate = () => {
+		toggleShowUpdate(false);
         toggleShowDelete(false);
 		toggleShowCreate(!showCreate);
 	};
 
 	const setShowDelete = () => {
+		toggleShowUpdate(false);
 		toggleShowCreate(false);
         toggleShowDelete(!showDelete);
 	}
@@ -85,10 +87,15 @@ const Maps = (props) => {
         toggleShowDelete(false);
         toggleShowUpdate(!showUpdate);
 	}
+
+	useEffect(() =>{
+		refetch();
+	}, []);
+	
     return (
          <div class="centered">
              <WCHeader style={{ backgroundColor: "red", height: "25px", width: "800px" }} class="maps-header-text center">Your Maps</WCHeader>
-             <WCHeader style={{ backgroundColor: "black", height: "60px", width: "800px"}} class="center">Your Maps</WCHeader>
+             <WCHeader style={{ backgroundColor: "black", height: "60px", width: "800px"}} class="center"></WCHeader>
              <WCContent style={{ backgroundColor: "lightpink", height: "400px"}}>
                 <WRow>
                     <WCol size="6" style={{height:"400px"}}>

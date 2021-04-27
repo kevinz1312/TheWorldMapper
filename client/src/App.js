@@ -28,7 +28,7 @@ const App = () => {
 			<WLayout wLayout="header">
 				<WLHeader>
 					<Navbar 
-						fetchUser={refetch} auth={auth} 
+						fetchUser={refetch} auth={auth}  
 						user={user}/>
 				</WLHeader>
 				<Switch>
@@ -37,6 +37,7 @@ const App = () => {
 						path="/welcome" 
 						name="welcome" 
 						render={() => 
+							auth ? <Redirect to="/maps"/> :
 							<WLMain>
 								<WelcomeScreen/>
 							</WLMain>
@@ -46,7 +47,8 @@ const App = () => {
 					<Route 
 						path="/maps" 
 						name="maps" 
-						render={() => 
+						render={() =>
+							!auth ? <Redirect to="/welcome"/> :
 							<WLMain>
 								<Maps user={user}/>
 							</WLMain>

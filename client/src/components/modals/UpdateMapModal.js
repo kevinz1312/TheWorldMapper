@@ -5,8 +5,6 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 const UpdateMapModal = (props) => {
 	const [input, setInput] = useState({name: ''});
 
-
-	
 	const updateInput = (e) => {
 		const { name, value } = e.target;
 		const updated = { ...input, [name]: value };
@@ -16,7 +14,6 @@ const UpdateMapModal = (props) => {
 	const handleUpdateMap = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
-				console.log(input.name)
 				alert('All fields must be filled out to create map');
 				return;
 			}

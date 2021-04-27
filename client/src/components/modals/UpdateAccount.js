@@ -1,13 +1,13 @@
 import React, { useState } 	from 'react';
-import { REGISTER }			from '../../cache/mutations';
+import { UPDATE }			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
-const CreateAccount = (props) => {
-	const [input, setInput] = useState({ email: '', password: '', name: ''});
+const UpdateAccount = (props) => {
+	const [input, setInput] = useState({ email: props.user.email, password: '', name: props.user.name, _id: props.user._id});
 	const [loading, toggleLoading] = useState(false);
-	const [Register] = useMutation(REGISTER);
+	const [Update] = useMutation(UPDATE);
 
 	
 	const updateInput = (e) => {
@@ -16,27 +16,20 @@ const CreateAccount = (props) => {
 		setInput(updated);
 	};
 
-	const handleCreateAccount = async (e) => {
+	const handleUpdateAccount = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
-				alert('All fields must be filled out to register');
+				alert('All fields must be filled out to update');
 				return;
 			}
 		}
-		const { loading, error, data } = await Register({ variables: { ...input } });
+		const { loading, error, data } = await Update({ variables: { ...input }});
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
-			console.log(data)
 			toggleLoading(false);
-			if(data.register.email === 'already exists') {
-				alert('User with that email already registered');
-			}
-			else {
-				props.fetchUser();
-			}
-			props.setShowCreate(false);
-
+			props.fetchUser();
+			props.setShowUpdate(false);
 		};
 	};
 
@@ -60,7 +53,7 @@ const CreateAccount = (props) => {
 							</WCol>
 							<WCol size="6">
 								<WInput 
-									className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
+									className="modal-input" id="modal-input-update-name" onBlur={updateInput} name="name" labelAnimation="up"
 									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" defaultValue={props.user.name} 
 								/>
 							</WCol>
@@ -75,7 +68,7 @@ const CreateAccount = (props) => {
 							</WCol>
 							<WCol size="6">
 								<WInput 
-								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
+								className="modal-input" id="modal-input-update-email" onBlur={updateInput} name="email" labelAnimation="up"
 								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" defaultValue={props.user.email}
 								/>
 							</WCol>
@@ -90,7 +83,7 @@ const CreateAccount = (props) => {
 							</WCol>
 							<WCol size="6">
 								<WInput 
-								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
+								className="modal-input" id="modal-input-update-password" onBlur={updateInput} name="password" labelAnimation="up"  autoFocus={true}
 								barAnimation="solid" labelText="*Enter Password Here*" wType="outlined" inputType="password"
 								/>
 							</WCol>
@@ -101,7 +94,7 @@ const CreateAccount = (props) => {
 						<WRow className="modal-col-gap">
 							<WCol size="2" ></WCol>
 							<WCol size="4" >
-							<WButton className="modal-button" onClick={handleCreateAccount} span clickAnimation="ripple-light" hoverAnimation="darken" shape="default" color="primary">
+							<WButton className="modal-button" onClick={handleUpdateAccount} span clickAnimation="ripple-light" hoverAnimation="darken" shape="default" color="primary">
 								Update Account
 							</WButton>
 							</WCol>
@@ -119,4 +112,4 @@ const CreateAccount = (props) => {
 	);
 }
 
-export default CreateAccount;
+export default UpdateAccount;

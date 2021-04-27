@@ -26,6 +26,17 @@ export const LOGOUT = gql`
 	}
 `;
 
+
+export const UPDATE = gql`
+	mutation Update($email: String!, $password: String!, $name: String!, $_id: String!) {
+		update(email: $email, password: $password, name: $name, _id: $_id) {
+			email
+			password
+			name
+		}
+	}
+`;
+
 export const ADD_MAP = gql`
 	mutation AddMap($map: MapInput!) {
 		addMap(map: $map) 
@@ -64,8 +75,8 @@ export const DELETE_ITEM = gql`
 `;
 
 export const UPDATE_ITEM_FIELD = gql`
-	mutation UpdateItemField($_id: String!, $itemId: String!, $field: String!, $value: String!, $flag: Int!) {
-		updateItemField(_id: $_id, itemId: $itemId, field: $field, value: $value, flag: $flag) {
+	mutation UpdateItemField($_id: String!, $itemId: String!, $field: String!, $value: String!) {
+		updateItemField(_id: $_id, itemId: $itemId, field: $field, value: $value) {
 			_id
 			id
 			description
