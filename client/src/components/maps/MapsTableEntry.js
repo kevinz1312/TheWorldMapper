@@ -1,7 +1,14 @@
 import { WNavItem, WButton, WRow, WCol } from 'wt-frontend';
+import { useHistory } from "react-router-dom";
 
 
 const MapsTableEntry = (props) => {
+    let history = useHistory();
+
+    const HandleHistoryRoute = () => {
+        history.push("/regions/" + props._id);
+    }
+
     return (
         <WRow style={{width:"385px", height:"60px"}}>
         <WCol size="8">
@@ -9,7 +16,7 @@ const MapsTableEntry = (props) => {
             className={"list-item"} hoverAnimation="lighten" style={{width:"275px", height:"60px"}}
         >
             {
-                <div className={"list-text"}>
+                <div className={"list-text"} onClick={() => HandleHistoryRoute()}>
                     {props.name}
                 </div>
             }

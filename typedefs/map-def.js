@@ -7,15 +7,22 @@ const typeDefs = gql `
 		id: Int!
 		name: String!
 		owner: String!
+		capital: String!
+		leader: String!
+		flag: String!
 	}
 	input MapInput {
 		_id: String
 		id: Int
 		name: String
 		owner: String
+		capital: String!
+		leader: String!
+		flag: String!
 	}
 	extend type Query {
-		getAllMaps: [Map]
+		getAllMaps(_id: String!): [Map]
+		getMapById(_id: String!): Map 
 	}
 	extend type Mutation {
 		addMap(map: MapInput!): String

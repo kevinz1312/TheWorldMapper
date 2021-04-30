@@ -43,7 +43,8 @@
 	--blue-gray: #7e8084;
 	--darkblue-gray: #2b2e36;
     --warm-black: #322d2d;
-    --pink: rgb(214, 102, 190)
+    --pink: rgb(214, 102, 190);
+    --sky-blue: rgb(28, 140, 196)
 }
 
 html, body {
@@ -160,7 +161,7 @@ html, body {
 .table-header-section:hover {
     transition: 0.1s ease-in-out;
     cursor: pointer;
-    background-color: var(--deep-blue-lighter);
+    background-color: var(--hover-light);
 }
 
 .table-input {
@@ -216,7 +217,7 @@ html, body {
 }
 
 .map-table-buttons{
-    background-color: var(--light-pink);
+    background-color: transparent;
 }
 
 .map-table-buttons:hover{
@@ -258,6 +259,29 @@ html, body {
 
 .maps-header-text{
     font-weight: bold;
-    font-size: 18px;
+    font-size: 22px;
     color:var(--warm-white);
+}
+
+.maps-header-name-text{
+    font-weight: bold;
+    font-size: 22px;
+    color:var(--sky-blue);
+}
+
+.maps-header-name-text:hover{
+    cursor: pointer;
+
+}
+
+.region-add-button{
+    color:green;
+}
+
+.region-material-icons{
+    color: white;
+}
+
+.logo:hover{
+    cursor: pointer;
 }

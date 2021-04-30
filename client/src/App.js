@@ -8,6 +8,7 @@ import { jsTPS } 		from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import WelcomeScreen from './components/welcome/WelcomeScreen';
 import Maps from './components/maps/Maps';
+import Regions from './components/regions/Regions';
  
 const App = () => {
 	let user = null;
@@ -42,8 +43,6 @@ const App = () => {
 								<WelcomeScreen/>
 							</WLMain>
 						} />
-					
-
 					<Route 
 						path="/maps" 
 						name="maps" 
@@ -53,6 +52,17 @@ const App = () => {
 								<Maps user={user}/>
 							</WLMain>
 						} />
+
+					<Route 
+						path="/regions/:currentRegionId" 
+						name="region" 
+						render={() =>
+							// !auth ? <Redirect to="/welcome"/> :
+							<WLMain>
+								<Regions user={user}/>
+							</WLMain>
+						} />
+
 
 				</Switch>
 			</WLayout>

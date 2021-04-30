@@ -18,6 +18,18 @@ const mapSchema = new Schema(
 			type: String,
 			required: true
 		},
+		capital: {
+			type: String,
+			required: false
+		},
+		leader: {
+			type: String,
+			required: false
+		},
+		flag: {
+			type: String,
+			required: false
+		},
 	},
 	{ timestamps: true }
 );

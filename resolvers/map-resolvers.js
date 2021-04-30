@@ -7,13 +7,25 @@ module.exports = {
 		 	@param 	 {object} req - the request object containing a user id
 			@returns {array} an array of map objects on success, and an empty array on failure
 		**/
-		getAllMaps: async (_, __, { req }) => {
-			const _id = new ObjectId(req.userId);
-			if(!_id) { return([])};
-			const maps = await Map.find({owner: _id});
+		getAllMaps: async (_, args, { req }) => {
+			const { _id} = args;
+			const objectId = new ObjectId(_id);
+			if(!objectId) { return([])};
+			const maps = await Map.find({owner: objectId});
 			if(maps) return (maps);
 
-		}
+		},
+		/** 
+		 	@param 	 {object} args - a map id
+			@returns {object} a map on success and an empty object on failure
+		**/
+		getMapById: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			const map = await Map.findOne({_id: objectId});
+			if(map) return map;
+			else return ({});
+		},
 
     },
     Mutation: {
@@ -28,12 +40,15 @@ module.exports = {
 				objectId = new ObjectId();
 			else 
 				objectId = new ObjectId(map._id);
-			const { id, name, owner } = map;
+			const { id, name, owner, capital, leader, flag } = map;
 			const newList = new Map({
 				_id: objectId,
 				id: id,
 				name: name,
 				owner: owner,
+				capital: capital,
+				leader: leader,
+				flag: flag,
 			});
 			const updated = newList.save();
 			if(updated) return objectId;

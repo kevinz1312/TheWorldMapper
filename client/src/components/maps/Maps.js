@@ -26,7 +26,7 @@ const Maps = (props) => {
     const [currentMapName, updateMapName] = useState("");
 
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
+	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS, {variables: {_id: props.user._id}});
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) { maps = data.getAllMaps; }
@@ -39,6 +39,9 @@ const Maps = (props) => {
 			id: id,
 			name: name,
 			owner: props.user._id,
+			capital: '',
+			leader: '',
+			flag: '',
 		}
 		const { data } = await AddMap({ variables: { map: list }});
 		list._id = data;
@@ -46,13 +49,13 @@ const Maps = (props) => {
 	}
 
 	const deleteMap = async (_id) => {
-			DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+			DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS, variables: {_id: props.user._id} }] });
 			refetch();
 	}
 
 	const updateMapField = async (_id, field, value, prev) => {
 		if(value !== prev){
-            UpdateMapField({ variables: { _id: _id, field: field, value: value }, refetchQueries: [{ query: GET_DB_MAPS }] })
+            UpdateMapField({ variables: { _id: _id, field: field, value: value }, refetchQueries: [{ query: GET_DB_MAPS, variables: {_id: props.user._id} }] })
 		}
 	};
 
@@ -94,8 +97,8 @@ const Maps = (props) => {
 	
     return (
          <div class="centered">
-             <WCHeader style={{ backgroundColor: "red", height: "25px", width: "800px" }} class="maps-header-text center">Your Maps</WCHeader>
-             <WCHeader style={{ backgroundColor: "black", height: "60px", width: "800px"}} class="center"></WCHeader>
+             <WCHeader style={{ backgroundColor: "red", height: "35px", width: "800px" }} class="maps-header-text center">Your Maps</WCHeader>
+             <WCHeader style={{ backgroundColor: "black", height: "50px", width: "800px"}} class="center"></WCHeader>
              <WCContent style={{ backgroundColor: "lightpink", height: "400px"}}>
                 <WRow>
                     <WCol size="6" style={{height:"400px"}}>
