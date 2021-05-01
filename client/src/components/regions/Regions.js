@@ -6,7 +6,6 @@ import { useMutation, useQuery } 		from '@apollo/client';
 import { GET_DB_MAPS } 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
-import WRow from 'wt-frontend/build/components/wgrid/WRow';
 
 const Regions = (props) => {
     const { currentRegionId } = useParams();
@@ -19,7 +18,6 @@ const Regions = (props) => {
 	if(data) { regions = data.getAllMaps; }
 
 	const createNewRegion = async () => {
-        console.log("as")
 		const length = regions.length
 		const id = length >= 1 ? regions[length - 1].id + Math.floor((Math.random() * 100) + 1) : 1;
 
@@ -31,10 +29,12 @@ const Regions = (props) => {
             capital: "Untitled",
 			leader: "Untitled",
 			flag: "Flag",
+            landmarks: [],
 		}
 		const { data } = await AddRegion({ variables: { map: list }});
 		list._id = data;
 		await refetchRegions(refetch);
+		refetch();
 	}
 
     const refetchRegions = async (refetch) => {

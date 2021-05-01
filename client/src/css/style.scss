@@ -269,11 +269,6 @@ html, body {
     color:var(--sky-blue);
 }
 
-.maps-header-name-text:hover{
-    cursor: pointer;
-
-}
-
 .region-add-button{
     color:green;
 }
@@ -283,5 +278,19 @@ html, body {
 }
 
 .logo:hover{
+    cursor: pointer;
+}
+
+.region-viewer-label-text{
+    font-weight: bold;
+    font-size: 22px;
+    color:var(--warm-white); 
+}
+
+.region-viewer-parent-region{
+    color:var(--sky-blue); 
+}
+
+.region-viewer-parent-region:hover{
     cursor: pointer;
 }

@@ -42,11 +42,11 @@ const RegionsHeader = (props) => {
              </WRow>
              <WRow style={{ height: "8px", width: "1400px"}}></WRow> 
              <WRow style={{ height: "50px", width: "1400px", background: "red"}}>
-             <WCol size="2"><WButton className='table-header-section center' wType="texted" >Name</WButton></WCol>
+             <WCol size="3"><WButton className='table-header-section center' wType="texted" >Name</WButton></WCol>
              <WCol size="2"><WButton className='table-header-section center' wType="texted" >Capital</WButton></WCol>
              <WCol size="2"><WButton className='table-header-section center' wType="texted" >Leader</WButton></WCol>
              <WCol size="2"><WButton className='table-header-section center' wType="texted" >Flag</WButton></WCol>
-             <WCol size="4"><WButton className='table-header-section center' wType="texted" >Landmarks</WButton></WCol>
+             <WCol size="3"><WButton className='table-header-section center' wType="texted" >Landmarks</WButton></WCol>
 
              </WRow>        
         </div>

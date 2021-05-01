@@ -10,6 +10,7 @@ const typeDefs = gql `
 		capital: String!
 		leader: String!
 		flag: String!
+		landmarks: [String]
 	}
 	input MapInput {
 		_id: String
@@ -19,6 +20,7 @@ const typeDefs = gql `
 		capital: String!
 		leader: String!
 		flag: String!
+		landmarks: [String]
 	}
 	extend type Query {
 		getAllMaps(_id: String!): [Map]

@@ -7,7 +7,7 @@ const RegionsTable = (props) => {
                 // props.todolists &&
                 props.regions.map(region => (
                     <RegionsTableEntry
-                        id={region.id} key={region.id} name={region.name} _id={region._id} capital={region.capital} leader={region.leader} flag={region.flag} 
+                        id={region.id} key={region.id} name={region.name} _id={region._id} capital={region.capital} leader={region.leader} flag={region.flag} landmarks={region.landmarks}
                     />
                 ))
             }

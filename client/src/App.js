@@ -9,6 +9,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import WelcomeScreen from './components/welcome/WelcomeScreen';
 import Maps from './components/maps/Maps';
 import Regions from './components/regions/Regions';
+import RegionViewer from './components/regions/RegionViewer';
  
 const App = () => {
 	let user = null;
@@ -63,6 +64,15 @@ const App = () => {
 							</WLMain>
 						} />
 
+					<Route 
+						path="/regionviewer/:currentRegionId" 
+						name="region viewer" 
+						render={() =>
+							// !auth ? <Redirect to="/welcome"/> :
+							<WLMain>
+								<RegionViewer user={user}/>
+							</WLMain>
+						} />
 
 				</Switch>
 			</WLayout>

@@ -30,6 +30,10 @@ const mapSchema = new Schema(
 			type: String,
 			required: false
 		},
+		landmarks:{
+			type: [String],
+			required: false
+		},
 	},
 	{ timestamps: true }
 );
