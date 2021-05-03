@@ -46,17 +46,20 @@ const Maps = (props) => {
 		const { data } = await AddMap({ variables: { map: list }});
 		list._id = data;
 		await refetchMaps(refetch);
+		refetch();
 	}
 
 	const deleteMap = async (_id) => {
-			DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS, variables: {_id: props.user._id} }] });
+			DeleteMap({ variables: { _id: _id }});
+			await refetchMaps(refetch);
 			refetch();
-	}
+		}
 
 	const updateMapField = async (_id, field, value, prev) => {
 		if(value !== prev){
             UpdateMapField({ variables: { _id: _id, field: field, value: value }, refetchQueries: [{ query: GET_DB_MAPS, variables: {_id: props.user._id} }] })
 		}
+		await refetchMaps(refetch);
 	};
 
     const refetchMaps = async (refetch) => {
