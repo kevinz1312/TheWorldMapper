@@ -27,6 +27,35 @@ module.exports = {
 			else return ({});
 		},
 
+		/** 
+		 	@param 	 {object} req - the request object containing a user id
+			@returns {array} an array of ancestor map objects on success, and an empty array on failure
+		**/
+		getDBMapAncestors: async (_, args, { req }) => {
+			let { _id} = args;
+			let objectId = new ObjectId(_id);
+			let ancestorRegions= [];
+			if(!objectId) { return([])};
+			
+			if(_id !== req.userId){
+				let map = await Map.findOne({_id: objectId});
+				if(map === null)
+					return([])
+				_id = map.owner;
+				objectId = new ObjectId(_id);
+
+				while(_id !== req.userId){
+				map = await Map.findOne({_id: objectId});
+				if(map === null)
+				return([])
+				ancestorRegions.unshift(map);
+				_id = map.owner;
+				objectId = new ObjectId(_id);
+				}
+			}
+			if(ancestorRegions) return (ancestorRegions);
+		},
+
     },
     Mutation: {
         /** 

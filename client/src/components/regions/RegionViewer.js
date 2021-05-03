@@ -37,8 +37,6 @@ const RegionViewer = (props) => {
     }
 
 	useEffect(() =>{
-		refetchR();
-        refetchS();
         refetch();
 	}, []);
 
@@ -84,6 +82,8 @@ const RegionViewer = (props) => {
                 <div className="region-viewer-label-text">{subRegions.length}</div>
                 </WCol></WRow>
                 </WCol>
+
+                
 
 
              </WRow>

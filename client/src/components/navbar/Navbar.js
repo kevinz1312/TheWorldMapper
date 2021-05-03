@@ -1,15 +1,18 @@
-import React, { useState } 	from 'react';
+import React, { useEffect, useState } 	from 'react';
 import { WNavbar, WNavItem } 	from 'wt-frontend';
 import Logo from '../navbar/Logo';
 import NavbarOptions from '../navbar/NavbarOptions';
+import NavbarNavigation from '../navbar/NavbarNavigation';
 import Login 							from '../modals/Login';
 import CreateAccount 					from '../modals/CreateAccount';
 import UpdateAccount 					from '../modals/UpdateAccount';
+import {useParams} from "react-router-dom";
 
 const Navbar = (props) => {
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	let { currentRegionId } = useParams();
 
 	const setShowLogin = () => {
 		toggleShowUpdate(false);
@@ -24,6 +27,7 @@ const Navbar = (props) => {
 	};
     
 	const setShowUpdate = () => {
+		console.log(props.auth)
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(!showUpdate);
@@ -37,6 +41,16 @@ const Navbar = (props) => {
                     <Logo className='logo' />
                 </WNavItem>
             </ul>
+
+			{ ((typeof currentRegionId) === 'undefined') || (props.auth === 'false') ?
+			<></>:
+			<ul>
+				<NavbarNavigation currentRegionId = {currentRegionId} user={props.user} auth={props.auth} ></NavbarNavigation>
+			</ul>
+			
+			}
+
+
             <ul>
                 <NavbarOptions
                     fetchUser={props.fetchUser} auth={props.auth} 

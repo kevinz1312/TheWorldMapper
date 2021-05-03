@@ -85,7 +85,7 @@ html, body {
 
 .logo {
 	color: $primary-color;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-family: "Roboto Mono", monospace;
     text-transform: uppercase;
     font-weight: bold;
@@ -293,4 +293,10 @@ html, body {
 
 .region-viewer-parent-region:hover{
     cursor: pointer;
+}
+
+.navbar-navigation{
+    color: $text-color;
+    font-size: 16px;
+    font-weight: bold;
 }

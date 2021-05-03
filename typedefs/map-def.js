@@ -24,7 +24,8 @@ const typeDefs = gql `
 	}
 	extend type Query {
 		getAllMaps(_id: String!): [Map]
-		getMapById(_id: String!): Map 
+		getMapById(_id: String!): Map
+		getDBMapAncestors(_id: String!): [Map]
 	}
 	extend type Mutation {
 		addMap(map: MapInput!): String

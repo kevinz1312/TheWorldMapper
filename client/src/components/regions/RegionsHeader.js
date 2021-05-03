@@ -17,17 +17,6 @@ const RegionsHeader = (props) => {
 		refetch();
 	}, []);
 
-    const test = () =>{
-        console.log("test")
-    }
-    const HandleHistoryRoute = () => {
-        if(props.user._id === region.owner)
-            return;
-        else
-            history.push("/regions/" + region.owner)
-    }
-    
-
     return (
          <div>
              <WRow style={{ height: "35px", width: "1400px"}}>

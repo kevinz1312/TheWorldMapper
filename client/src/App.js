@@ -27,12 +27,7 @@ const App = () => {
 
 	return(
 		<BrowserRouter>
-			<WLayout wLayout="header">
-				<WLHeader>
-					<Navbar 
-						fetchUser={refetch} auth={auth}  
-						user={user}/>
-				</WLHeader>
+			 <WLayout wLayout="header"> 
 				<Switch>
 					<Redirect exact from="/" to={ {pathname: "/welcome"} } />
 					<Route 
@@ -40,28 +35,48 @@ const App = () => {
 						name="welcome" 
 						render={() => 
 							auth ? <Redirect to="/maps"/> :
+							<>
+							<WLHeader>
+								<Navbar 
+									fetchUser={refetch} auth={auth}  
+									user={user}/>
+							</WLHeader>
 							<WLMain>
 								<WelcomeScreen/>
 							</WLMain>
+							</>
 						} />
 					<Route 
 						path="/maps" 
 						name="maps" 
 						render={() =>
 							!auth ? <Redirect to="/welcome"/> :
+							<>
+							<WLHeader>
+								<Navbar 
+									fetchUser={refetch} auth={auth}  
+									user={user}/>
+							</WLHeader>
 							<WLMain>
 								<Maps user={user}/>
 							</WLMain>
+							</>
 						} />
 
 					<Route 
 						path="/regions/:currentRegionId" 
 						name="region" 
 						render={() =>
-							// !auth ? <Redirect to="/welcome"/> :
+							<>
+							<WLHeader>
+								<Navbar 
+									fetchUser={refetch} auth={auth}  
+									user={user}/>
+							</WLHeader>
 							<WLMain>
 								<Regions user={user}/>
 							</WLMain>
+							</>
 						} />
 
 					<Route 

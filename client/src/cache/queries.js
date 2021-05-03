@@ -37,3 +37,17 @@ export const GET_DB_MAP_BY_ID = gql`
 		}
 	}
 `;
+
+export const GET_DB_MAPS_ANCESTORS = gql`
+	query GetDBMapAncestors($_id: String!) {
+		getDBMapAncestors(_id: $_id) {
+			_id
+			id
+			name
+			owner
+			capital
+			leader
+			flag
+		}
+	}
+`;

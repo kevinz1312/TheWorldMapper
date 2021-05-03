@@ -58,7 +58,7 @@ html {
 }
 
 .table-entries {
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .table-header {
@@ -225,3 +225,16 @@ html {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .navbar-navigation{
+    padding: 8px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ }
+
+ .navbar-navigation-container{
+    max-width: 1000px;
+    max-height: 64px;
+    overflow-y: auto;
+ }
