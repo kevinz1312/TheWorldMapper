@@ -42,12 +42,12 @@ const RegionViewer = (props) => {
 
     return (
          <div class="centered">
-             <WRow style={{ height: "45px", width: "1000px", background: "red"}}>
+             <WRow style={{ height: "45px", width: "1000px"}}>
              <WCol size="2" >
              <WButton className="map-table-buttons region-material-icons" ><i className="material-icons" style={{ fontSize: 45}}>undo</i></WButton>
              <WButton className="map-table-buttons region-material-icons"><i className="material-icons" style={{ fontSize: 45}}>redo</i></WButton></WCol>
              </WRow>
-             <WCContent style={{ backgroundColor: "lightpink", height: "600px", width: "1000px"}}>
+             <WCContent style={{ backgroundColor: "gray", height: "600px", width: "1000px"}}>
              <WRow>
                 <WCol size="6">
                 <WButton className="map-table-buttons region-material-icons center" ><i className="material-icons" style={{ fontSize: 300}}>flag</i></WButton>
@@ -82,7 +82,22 @@ const RegionViewer = (props) => {
                 <div className="region-viewer-label-text">{subRegions.length}</div>
                 </WCol></WRow>
                 </WCol>
+                <WCol size="6">
+                <div className="region-viewer-header-text center">Region Landmarks:</div>
+                <WCContent className="center" style={{ backgroundColor: "black", height: "420px", width: "460px"}}></WCContent>
+                <WCContent className="center" style={{ backgroundColor: "black", height: "36px", width: "460px", backgroundColor: "darkgray"}}>
+                    <WRow>
+                    <WCol size="1">
+                    <WButton className="map-table-buttons region-add-button" ><i className="material-icons" style={{ fontSize: 35}} onClick={props.createNewRegion}>add_box</i></WButton>
+                    </WCol>
+                    <WCol size="4">
+                    <WCContent className="center" style={{ backgroundColor: "black", height: "36px", width: "200px", backgroundColor: "pink"}}>
+                    </WCContent>
+                    </WCol>
+                    </WRow>
+                </WCContent>
 
+                </WCol>
                 
 
 

@@ -84,9 +84,16 @@ const App = () => {
 						name="region viewer" 
 						render={() =>
 							// !auth ? <Redirect to="/welcome"/> :
+							<>
+							<WLHeader>
+								<Navbar 
+									fetchUser={refetch} auth={auth}  
+									user={user}/>
+							</WLHeader>
 							<WLMain>
 								<RegionViewer user={user}/>
 							</WLMain>
+							</>
 						} />
 
 				</Switch>
