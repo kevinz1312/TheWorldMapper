@@ -54,7 +54,7 @@ const UpdateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 									className="modal-input" id="modal-input-update-name" onBlur={updateInput} name="name" labelAnimation="up"
-									barAnimation="solid" labelText="*Enter Name Here*" wType="outlined" inputType="text" defaultValue={props.user.name} 
+									barAnimation="solid" labelText="*Enter Updated Name Here*" wType="outlined" inputType="text" defaultValue={props.user.name} 
 								/>
 							</WCol>
 						</WRow>
@@ -69,7 +69,7 @@ const UpdateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 								className="modal-input" id="modal-input-update-email" onBlur={updateInput} name="email" labelAnimation="up"
-								barAnimation="solid" labelText="*Enter Email Here*" wType="outlined" inputType="text" defaultValue={props.user.email}
+								barAnimation="solid" labelText="*Enter Updated Email Here*" wType="outlined" inputType="text" defaultValue={props.user.email}
 								/>
 							</WCol>
 						</WRow>
@@ -84,7 +84,7 @@ const UpdateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 								className="modal-input" id="modal-input-update-password" onBlur={updateInput} name="password" labelAnimation="up"  autoFocus={true}
-								barAnimation="solid" labelText="*Enter Password Here*" wType="outlined" inputType="password"
+								barAnimation="solid" labelText="*Enter Updated Password Here*" wType="outlined" inputType="password"
 								/>
 							</WCol>
 						</WRow>

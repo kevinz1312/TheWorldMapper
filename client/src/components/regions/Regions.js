@@ -11,6 +11,8 @@ const Regions = (props) => {
     const { currentRegionId } = useParams();
     let regions 							= [];
     const [AddRegion] 			= useMutation(mutations.ADD_MAP);
+    const [DeleteRegion] 			= useMutation(mutations.DELETE_MAP);
+	const [UpdateRegionField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS, {variables: {_id: currentRegionId}});
 	if(loading) { console.log(loading, 'loading'); }
@@ -37,6 +39,18 @@ const Regions = (props) => {
 		refetch();
 	}
 
+	const updateRegionField = async (_id, field, value, prev) => {
+		if(value !== prev){
+            await UpdateRegionField({ variables: { _id: _id, field: field, value: value }})
+		}
+		await refetchRegions(refetch);
+	};
+
+	const deleteRegion = async (_id) => {
+		await DeleteRegion({ variables: { _id: _id }});
+		await refetchRegions(refetch);
+	}
+
     const refetchRegions = async (refetch) => {
 		const { loading, error, data } = await refetch();
 		if (data) {
@@ -54,7 +68,7 @@ const Regions = (props) => {
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             
-             <RegionsTable regions={regions}> </RegionsTable>
+             <RegionsTable regions={regions} editRegion={updateRegionField} deleteRegion={deleteRegion}></RegionsTable>
              </WCContent>
         </div>
     );

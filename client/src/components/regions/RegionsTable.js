@@ -5,10 +5,12 @@ const RegionsTable = (props) => {
         <div className=' table-entries container-primary'>
             {
                 // props.todolists &&
-                props.regions.map(region => (
+                props.regions.map((region, index) => (
                     <RegionsTableEntry
-                        id={region.id} key={region.id} name={region.name} _id={region._id} capital={region.capital} leader={region.leader} flag={region.flag} landmarks={region.landmarks}
-                    />
+                        id={region.id} key={region._id} 
+                        region={region} editRegion={props.editRegion} deleteRegion={props.deleteRegion}
+
+                        />
                 ))
             }
         </div>

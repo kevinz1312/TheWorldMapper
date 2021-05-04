@@ -274,7 +274,12 @@ html, body {
 }
 
 .region-material-icons{
+    background-color: transparent;
     color: white;
+}
+
+.region-material-icons:hover{
+    background-color: var(--hover-light);
 }
 
 .logo:hover{
