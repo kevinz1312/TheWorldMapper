@@ -68,6 +68,36 @@ const Maps = (props) => {
 		}
 	}
 
+	const handleActiveMap = async (id) => {
+		let newMapsList = [];
+		for(let i=0; i< maps.length; i++){
+			let tempMap = {
+				_id: maps[i]._id,
+				id: maps[i].id,
+				name: maps[i].name,
+				owner: maps[i].owner,
+				capital: maps[i].capital,
+				leader: maps[i].leader,
+				flag: maps[i].flag,
+			};
+			newMapsList.push(tempMap);
+			await DeleteMap({ variables: { _id: newMapsList[i]._id }})
+		}
+
+		const tempElement = (element) => element._id === id;
+		const tempIndex = newMapsList.findIndex(tempElement);
+		const tempList = newMapsList[tempIndex];
+		newMapsList.splice(tempIndex, 1);
+		newMapsList.unshift(tempList);
+
+		console.log(newMapsList)
+
+		for(let i=0;i<newMapsList.length;i++){
+			await AddMap({ variables: { map: newMapsList[i] }})
+		}
+		refetch();
+	}
+
     const setCurrentMapId = (_id) =>{
         updateMapId(_id);
     }
@@ -104,7 +134,7 @@ const Maps = (props) => {
              <WCContent style={{ backgroundColor: "lightpink", height: "400px"}}>
                 <WRow>
                     <WCol size="6" style={{height:"400px"}}>
-                        <MapsTable maps={maps} deleteMap={deleteMap} setCurrentMapId={setCurrentMapId} setCurrentMapName={setCurrentMapName }setShowDelete={setShowDelete} setShowUpdate={setShowUpdate}/>
+                        <MapsTable maps={maps} deleteMap={deleteMap} setCurrentMapId={setCurrentMapId} setCurrentMapName={setCurrentMapName }setShowDelete={setShowDelete} setShowUpdate={setShowUpdate} handleActiveMap={handleActiveMap}/>
                     </WCol>
                     <WCol size="6" style={{backgroundColor: "white", height: "400px"}}>
                     <img src={globe} style={{height:"363px"}} class="center"/>

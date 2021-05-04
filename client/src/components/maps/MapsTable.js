@@ -18,7 +18,7 @@ const MapsTable = (props) => {
                 // props.todolists &&
                 props.maps.map(map => (
                     <MapsTableEntry
-                        deleteMap={handleDeleteMap} updateMap={handleUpdateMap} id={map.id} key={map.id} name={map.name} _id={map._id} 
+                        deleteMap={handleDeleteMap} updateMap={handleUpdateMap} id={map.id} key={map.id} name={map.name} _id={map._id} handleActiveMap={props.handleActiveMap}
                     />
                 ))
             }

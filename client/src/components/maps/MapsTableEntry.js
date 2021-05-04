@@ -6,6 +6,7 @@ const MapsTableEntry = (props) => {
     let history = useHistory();
 
     const HandleHistoryRoute = () => {
+        props.handleActiveMap(props._id)
         history.push("/regions/" + props._id);
     }
 
