@@ -82,14 +82,14 @@ export class EditItem_Transaction extends jsTPS_Transaction {
 }
 
 /*  Handles create/delete of list items */
-export class UpdateListItems_Transaction extends jsTPS_Transaction {
+export class UpdateMapRegions_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 
-    constructor(listID, itemID, item, opcode, addfunc, delfunc, index = -1) {
+    constructor(ownerID, regionID, region, opcode, addfunc, delfunc, index = -1) {
         super();
         this.index = index;
-        this.listID = listID;
-		this.itemID = itemID;
-		this.item = item;
+        this.ownerID = ownerID;
+		this.regionID = regionID;
+		this.region = region;
         this.addFunction = addfunc;
         this.deleteFunction = delfunc;
         this.opcode = opcode;
@@ -97,23 +97,23 @@ export class UpdateListItems_Transaction extends jsTPS_Transaction {
     async doTransaction() {
 		let data;
         this.opcode === 0 ? { data } = await this.deleteFunction({
-							variables: {itemId: this.itemID, _id: this.listID}})
+							variables: { _id: this.regionID }})
 						  : { data } = await this.addFunction({
-							variables: {item: this.item, _id: this.listID, index: this.index}})  
-		if(this.opcode !== 0) {
-            this.item._id = this.itemID = data.addItem;
-		}
+							variables: { map: this.region, opcode: 1}})
+        if(this.opcode !== 0) {
+            this.region._id = this.regionID = data.addMap;
+        }
 		return data;
     }
     // Since delete/add are opposites, flip matching opcode
     async undoTransaction() {
 		let data;
         this.opcode === 1 ? { data } = await this.deleteFunction({
-							variables: {itemId: this.itemID, _id: this.listID}})
+                            variables: { _id: this.regionID }})
                           : { data } = await this.addFunction({
-							variables: {item: this.item, _id: this.listID, index: this.index}})
-		if(this.opcode !== 1) {
-            this.item._id = this.itemID = data.addItem;
+							variables: { map: this.region }})
+        if(this.opcode !== 0) {
+            this.region._id = this.regionID = data.addMap;
         }
 		return data;
     }

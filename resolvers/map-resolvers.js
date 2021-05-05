@@ -69,7 +69,7 @@ module.exports = {
 				objectId = new ObjectId();
 			else 
 				objectId = new ObjectId(map._id);
-			const { id, name, owner, capital, leader, flag } = map;
+			const { id, name, owner, capital, leader, flag, landmarks, subregions} = map;
 			const newList = new Map({
 				_id: objectId,
 				id: id,
@@ -78,6 +78,8 @@ module.exports = {
 				capital: capital,
 				leader: leader,
 				flag: flag,
+				landmarks: landmarks,
+				subregions: subregions
 			});
 			const updated = newList.save();
 			if(updated) return objectId;
@@ -105,6 +107,7 @@ module.exports = {
 			if(updated) return value;
 			else return "";
 		},
+
     }
 
 }

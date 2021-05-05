@@ -7,7 +7,7 @@ const MapsTableEntry = (props) => {
 
     const HandleHistoryRoute = () => {
         props.handleActiveMap(props._id)
-        history.push("/regions/" + props._id);
+        // history.push("/regions/" + props._id);
     }
 
     return (

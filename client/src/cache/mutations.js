@@ -55,6 +55,12 @@ export const UPDATE_MAP_FIELD = gql`
 	}
 `;
 
+export const UPDATE_MAP_FIELD_ARRAY = gql`
+	mutation UpdateMapFieldArray($_id: String!, $field: String!, $value: [String]!) {
+		updateMapFieldArray(_id: $_id, field: $field, value: $value)
+	}
+`;
+
 export const ADD_ITEM = gql`
 	mutation AddItem($item: ItemInput!, $_id: String!, $index: Int!) {
 		addItem(item: $item, _id: $_id, index: $index)

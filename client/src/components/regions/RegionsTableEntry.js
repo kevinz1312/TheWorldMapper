@@ -50,7 +50,7 @@ const RegionsTableEntry = (props) => {
                 <WRow>
                 {/* <WCol size="1"></WCol> */}
                 <WCol size="1"> 
-                <WButton className="region-material-icons" onClick={() => props.deleteRegion(_id)}><i className="material-icons " >close</i></WButton>
+                <WButton className="region-material-icons" onClick={() => props.deleteRegion(props.region)}><i className="material-icons " >close</i></WButton>
                 </WCol>
                 <WCol size="10">
                 {

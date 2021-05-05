@@ -74,7 +74,7 @@ const App = () => {
 									user={user}/>
 							</WLHeader>
 							<WLMain>
-								<Regions user={user}/>
+								<Regions user={user} tps={transactionStack}/>
 							</WLMain>
 							</>
 						} />

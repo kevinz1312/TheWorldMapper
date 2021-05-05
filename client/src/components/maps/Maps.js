@@ -12,8 +12,10 @@ import { GET_DB_MAPS } 				from '../../cache/queries';
 import CreateMap 							from '../modals/CreateMap';
 import DeleteMapModal 							from '../modals/DeleteMapModal';
 import UpdateMapModal 							from '../modals/UpdateMapModal';
+import { useHistory } from "react-router-dom";
 
 const Maps = (props) => {
+	const history = useHistory();
     let maps 							= [];
 	const [AddMap] 			= useMutation(mutations.ADD_MAP);
     const [DeleteMap] 			= useMutation(mutations.DELETE_MAP);
@@ -42,6 +44,8 @@ const Maps = (props) => {
 			capital: '',
 			leader: '',
 			flag: '',
+			landmarks: [],
+			subregions: []
 		}
 		const { data } = await AddMap({ variables: { map: list }});
 		list._id = data;
@@ -79,6 +83,8 @@ const Maps = (props) => {
 				capital: maps[i].capital,
 				leader: maps[i].leader,
 				flag: maps[i].flag,
+				landmarks: maps[i].landmarks,
+				subregions: maps[i].subregions,
 			};
 			newMapsList.push(tempMap);
 			await DeleteMap({ variables: { _id: newMapsList[i]._id }})
@@ -89,13 +95,23 @@ const Maps = (props) => {
 		const tempList = newMapsList[tempIndex];
 		newMapsList.splice(tempIndex, 1);
 		newMapsList.unshift(tempList);
-
-		console.log(newMapsList)
-
+		
 		for(let i=0;i<newMapsList.length;i++){
 			await AddMap({ variables: { map: newMapsList[i] }})
 		}
 		refetch();
+		history.push("/regions/" + id);
+	}
+
+	const cloneArray = (oldArray) => {
+		let newArray = [];
+		if((typeof oldArray) === 'undefined')
+			return new Array;
+		for(let i = 0; i< oldArray.length; i++){
+			let tempItem = oldArray[i]
+			newArray.push(tempItem);
+		}
+		return newArray;
 	}
 
     const setCurrentMapId = (_id) =>{
