@@ -1,4 +1,5 @@
 import RegionsTableEntry   from './RegionsTableEntry';
+import { useMutation, useQuery } 		from '@apollo/client';
 
 const RegionsTable = (props) => {
     return (

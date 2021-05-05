@@ -32,12 +32,16 @@ const mapSchema = new Schema(
 		},
 		landmarks:{
 			type: [String],
-			required: true
+			required: false
 		},
 		subregions:{
 			type: [String],
-			required: true
+			required: false
 		},
+		root:{
+			type: Boolean,
+			required: false
+		}
 	},
 	{ timestamps: true }
 );

@@ -20,6 +20,26 @@ export const GET_DB_MAPS = gql`
 			capital
 			leader
 			flag
+			subregions
+			landmarks
+			root
+		}
+	}
+`;
+
+export const GET_DB_SUBREGIONS = gql`
+	query GetAllSubRegions($_id: String!) {
+		getAllSubRegions(_id: $_id) {
+			_id
+			id
+			name
+			owner
+			capital
+			leader
+			flag
+			subregions
+			landmarks
+			root
 		}
 	}
 `;
@@ -34,6 +54,9 @@ export const GET_DB_MAP_BY_ID = gql`
 			capital
 			leader
 			flag
+			subregions
+			landmarks
+			root
 		}
 	}
 `;

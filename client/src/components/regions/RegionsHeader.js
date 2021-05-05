@@ -15,21 +15,11 @@ const RegionsHeader = (props) => {
 		refetch();
 	}, []);
 
-    const handleNewRegion = () => {
-        props.createNewRegion()
-        let newArray = props.cloneArray(region.subregions)
-        const regions = props.regions
-        // const index = props.regions.length() - 1
-        console.log(regions)
-        // newArray.push(props.regions[index]._id)
-        // props.updateRegionFieldArray();
-    }
-
     return (
          <div>
              <WRow style={{ height: "35px", width: "1400px"}}>
              <WCol size="2" >
-             <WButton className="map-table-buttons region-add-button" ><i className="material-icons" style={{ fontSize: 35}} onClick={handleNewRegion}>add_box</i></WButton>
+             <WButton className="map-table-buttons region-add-button" ><i className="material-icons" style={{ fontSize: 35}} onClick={props.createNewRegion}>add_box</i></WButton>
              <WButton className="map-table-buttons region-material-icons" ><i className="material-icons" style={{ fontSize: 35}} onClick={props.undo}>undo</i></WButton>
              <WButton className="map-table-buttons region-material-icons"><i className="material-icons" style={{ fontSize: 35}} onClick={props.redo}>redo</i></WButton></WCol>
              <WCol size="2"></WCol>

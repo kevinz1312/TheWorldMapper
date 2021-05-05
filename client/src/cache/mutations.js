@@ -38,8 +38,8 @@ export const UPDATE = gql`
 `;
 
 export const ADD_MAP = gql`
-	mutation AddMap($map: MapInput!) {
-		addMap(map: $map) 
+	mutation AddMap($map: MapInput!, $index: Int) {
+		addMap(map: $map, index: $index) 
 	}
 `;
 
@@ -56,7 +56,7 @@ export const UPDATE_MAP_FIELD = gql`
 `;
 
 export const UPDATE_MAP_FIELD_ARRAY = gql`
-	mutation UpdateMapFieldArray($_id: String!, $field: String!, $value: [String]!) {
+	mutation UpdateMapFieldArray($_id: String!, $field: String!, $value: [String]) {
 		updateMapFieldArray(_id: $_id, field: $field, value: $value)
 	}
 `;

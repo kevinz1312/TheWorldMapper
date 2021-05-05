@@ -99,7 +99,7 @@ export class UpdateMapRegions_Transaction extends jsTPS_Transaction {
         this.opcode === 0 ? { data } = await this.deleteFunction({
 							variables: { _id: this.regionID }})
 						  : { data } = await this.addFunction({
-							variables: { map: this.region, opcode: 1}})
+							variables: { map: this.region, index: this.index }})
         if(this.opcode !== 0) {
             this.region._id = this.regionID = data.addMap;
         }
@@ -111,8 +111,8 @@ export class UpdateMapRegions_Transaction extends jsTPS_Transaction {
         this.opcode === 1 ? { data } = await this.deleteFunction({
                             variables: { _id: this.regionID }})
                           : { data } = await this.addFunction({
-							variables: { map: this.region }})
-        if(this.opcode !== 0) {
+							variables: { map: this.region, index: this.index }})
+        if(this.opcode !== 1) {
             this.region._id = this.regionID = data.addMap;
         }
 		return data;

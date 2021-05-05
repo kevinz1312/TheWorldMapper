@@ -16,6 +16,25 @@ module.exports = {
 
 		},
 		/** 
+		 	@param 	 {object} req - the request object containing a user id
+			@returns {array} an array of map objects on success, and an empty array on failure
+		**/
+		getAllSubRegions: async (_, args, { req }) => {
+			let subregions = []
+			let region;
+			const { _id} = args;
+			const objectId = new ObjectId(_id);
+			if(!objectId) { return([])};
+			const parentRegion = await Map.findOne({_id: objectId});
+			const subRegionIDs = parentRegion.subregions;
+			for(let i = 0; i< subRegionIDs.length; i++){
+				region = await Map.findOne({_id: new ObjectId(subRegionIDs[i])});
+				subregions.push(region)
+			}
+			if(subregions) return (subregions);
+
+		},
+		/** 
 		 	@param 	 {object} args - a map id
 			@returns {object} a map on success and an empty object on failure
 		**/
@@ -63,13 +82,13 @@ module.exports = {
 			@returns {string} the objectID of the map or an error message
 		**/
 		addMap: async (_, args) => {
-			const { map } = args;
+			const { map, index } = args;
 			let objectId;
 			if (map._id === '')
 				objectId = new ObjectId();
 			else 
 				objectId = new ObjectId(map._id);
-			const { id, name, owner, capital, leader, flag, landmarks, subregions} = map;
+			const { id, name, owner, capital, leader, flag, landmarks, subregions, root} = map;
 			const newList = new Map({
 				_id: objectId,
 				id: id,
@@ -79,9 +98,22 @@ module.exports = {
 				leader: leader,
 				flag: flag,
 				landmarks: landmarks,
-				subregions: subregions
+				subregions: subregions,
+				root: root
 			});
 			const updated = newList.save();
+
+			if(root === false){
+			const parentObjectId = new ObjectId(owner)
+			const parentMap = await Map.findOne({_id: parentObjectId});
+			let parentSubRegions = parentMap.subregions;
+			if(index < 0)
+				parentSubRegions.push(objectId)
+			else 
+				parentSubRegions.splice(index, 0, objectId);
+			const parentUpdated = await Map.updateOne({_id: parentObjectId}, { subregions: parentSubRegions })
+			}
+
 			if(updated) return objectId;
 			else return ('Could not add map');
 		},
@@ -92,6 +124,15 @@ module.exports = {
 		deleteMap: async (_, args) => {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
+			const map = await Map.findOne({_id: objectId});
+			if(map.root === false){
+				const parentObjectId = new ObjectId(map.owner)
+				const parentMap = await Map.findOne({_id: parentObjectId});
+				let parentSubRegions = parentMap.subregions;
+				const index = parentSubRegions.indexOf(objectId)
+				parentSubRegions.splice(index, 1)
+				const parentUpdated = await Map.updateOne({_id: parentObjectId}, { subregions: parentSubRegions })
+			}
 			const deleted = await Map.deleteOne({_id: objectId});
 			if(deleted) return true;
 			else return false;
@@ -107,7 +148,19 @@ module.exports = {
 			if(updated) return value;
 			else return "";
 		},
-
+		updateMapFieldArray: async (_, args) => {
+			const { field, value, _id } = args;
+			const objectId = new ObjectId(_id);
+			let newSortedArray = [];
+			for(let i = 0; i< value.length; i++){
+				let tempItem = value[i];
+				newSortedArray.push(tempItem);
+			}
+			const updated = await Map.updateOne({_id: objectId}, {[field]: newSortedArray});
+			if(updated) return true;
+				else 
+				return false
+		},
     }
 
 }

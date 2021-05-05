@@ -12,6 +12,7 @@ const typeDefs = gql `
 		flag: String
 		landmarks: [String]
 		subregions: [String]
+		root: Boolean
 	}
 	input MapInput {
 		_id: String
@@ -23,17 +24,19 @@ const typeDefs = gql `
 		flag: String
 		landmarks: [String]
 		subregions: [String]
+		root: Boolean
 	}
 	extend type Query {
 		getAllMaps(_id: String!): [Map]
 		getMapById(_id: String!): Map
 		getDBMapAncestors(_id: String!): [Map]
+		getAllSubRegions(_id: String!): [Map]
 	}
 	extend type Mutation {
-		addMap(map: MapInput!): String
+		addMap(map: MapInput!, index: Int): String
 		deleteMap(_id: String!): Boolean
 		updateMapField(_id: String!, field: String!, value: String!): String
-		updateMapFieldArray(_id: String!, field: String!, value: String!): Boolean
+		updateMapFieldArray(_id: String!, field: String!, value: [String]): Boolean
 	}
 `;
 

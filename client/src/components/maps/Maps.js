@@ -45,7 +45,8 @@ const Maps = (props) => {
 			leader: '',
 			flag: '',
 			landmarks: [],
-			subregions: []
+			subregions: [],
+			root: true
 		}
 		const { data } = await AddMap({ variables: { map: list }});
 		list._id = data;
@@ -85,6 +86,7 @@ const Maps = (props) => {
 				flag: maps[i].flag,
 				landmarks: maps[i].landmarks,
 				subregions: maps[i].subregions,
+				root: maps[i].root
 			};
 			newMapsList.push(tempMap);
 			await DeleteMap({ variables: { _id: newMapsList[i]._id }})

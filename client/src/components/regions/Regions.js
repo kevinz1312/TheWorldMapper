@@ -3,25 +3,32 @@ import {useParams} from "react-router-dom";
 import RegionsHeader from "./RegionsHeader";
 import * as mutations 					from '../../cache/mutations';
 import { useMutation, useQuery } 		from '@apollo/client';
-import { GET_DB_MAPS } 				from '../../cache/queries';
+import { GET_DB_SUBREGIONS, GET_DB_MAP_BY_ID} 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
 import { UpdateMapRegions_Transaction } from '../../utils/jsTPS';
 
 const Regions = (props) => {
     const { currentRegionId } = useParams();
+	let parentRegion 							= "";
     let regions 							= [];
     const [AddRegion] 			= useMutation(mutations.ADD_MAP);
     const [DeleteRegion] 			= useMutation(mutations.DELETE_MAP);
 	const [UpdateRegionField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
 	const [UpdateRegionFieldArray] 	= useMutation(mutations.UPDATE_MAP_FIELD_ARRAY);
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS, {variables: {_id: currentRegionId}});
+    const { loading: loadingR, error: errorR, data: dataR, refetch: refetchR } = useQuery(GET_DB_MAP_BY_ID, {variables: {_id: currentRegionId}});
+    if(loadingR) { console.log(loadingR, 'loading'); }
+    if(errorR) { console.log(errorR, 'error'); }
+    if(dataR) { parentRegion = dataR.getMapById; 
+    }
+
+	const { loading, error, data, refetch } = useQuery(GET_DB_SUBREGIONS, {variables: {_id: currentRegionId}});
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
-	if(data) { regions = data.getAllMaps;}
+	if(data) { regions = data.getAllSubRegions;}
 
-	const createNewRegion = async (subregions) => {
+	const createNewRegion = async () => {
 		const length = regions.length
 		const id = length >= 1 ? regions[length - 1].id + Math.floor((Math.random() * 100) + 1) : 1;
 
@@ -34,18 +41,15 @@ const Regions = (props) => {
 			leader: "Untitled",
 			flag: "Flag",
 			landmarks: [],
-			subregions: []
+			subregions: [],
+			root: false
 		}
 		let opcode = 1;
 		let regionID = region._id;
 		let ownerID = currentRegionId;
 		let transaction = new UpdateMapRegions_Transaction(ownerID, regionID, region, opcode, AddRegion, DeleteRegion);
 		props.tps.addTransaction(transaction);
-		const { addMap } = await tpsRedo();
-		// console.log(addMap)
-
-
-
+		await tpsRedo();
 	}
 
 	const cloneArray = (oldArray) => {
@@ -69,15 +73,12 @@ const Regions = (props) => {
 
 
 	const updateRegionFieldArray = async (_id, field, value, prev) => {
-		if(value !== prev){
-            await UpdateRegionField({ variables: { _id: _id, field: field, value: value }})
-		}
-		await refetchRegions(refetch);
+		await UpdateRegionFieldArray({ variables: { _id: _id, field: field, value: value }})
+		await refetchRegion(refetchR);
 	};
 
 
 	const deleteRegion = async (region) => {
-		// console.log(region)
 		let opcode = 0;
 		let ownerID = currentRegionId;
 		let regionID = region._id;
@@ -90,11 +91,19 @@ const Regions = (props) => {
 			leader: region.leader,
 			flag: region.flag,
 			landmarks: [],
-			subregions: []
+			subregions: [],
+			root: false
 		}
-		let transaction = new UpdateMapRegions_Transaction(ownerID ,regionID, regionToDelete ,opcode ,AddRegion, DeleteRegion);
+		const index = regions.indexOf(region)
+		let transaction = new UpdateMapRegions_Transaction(ownerID ,regionID, regionToDelete ,opcode ,AddRegion, DeleteRegion, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
+	}
+	const refetchRegion = async (refetchR) => {
+		const { loading, error, data } = await refetchR();
+		if (data) {
+			parentRegion = data.getMapById;
+		}
 	}
 
     const refetchRegions = async (refetch) => {
@@ -103,6 +112,7 @@ const Regions = (props) => {
 			regions = data.getAllMaps;
 		}
 	}
+
 
 	const tpsUndo = async () => {
 		const retVal = await props.tps.undoTransaction();
@@ -122,7 +132,7 @@ const Regions = (props) => {
 
     return (
          <div class="centered">
-             <RegionsHeader currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} cloneArray={cloneArray} updateRegionFieldArray={updateRegionFieldArray} regions={regions}></RegionsHeader>
+             <RegionsHeader currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} cloneArray={cloneArray}></RegionsHeader>
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             
