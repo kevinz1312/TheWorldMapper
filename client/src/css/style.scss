@@ -144,10 +144,6 @@ html, body {
     background-color: var(--warm-white-transparent);
 }
 
-.table-header-button-disabled {
-    color: var(--warm-black);
-}
-
 .table-header {
     border-bottom: 2px $text-color dotted;
 }
@@ -310,4 +306,12 @@ html, body {
     font-weight: bold;
     font-size: 22px;
     color:var(--warm-white); 
+}
+
+.map-table-buttons-disabled {
+    color: var(--warm-black);
+}
+
+.map-table-buttons-disabled:hover {
+    background-color: transparent;
 }

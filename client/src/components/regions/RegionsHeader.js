@@ -10,6 +10,9 @@ const RegionsHeader = (props) => {
     if(loading) { console.log(loading, 'loading'); }
     if(error) { console.log(error, 'error'); }
     if(data) { region = data.getMapById; }
+    const undoStyle = props.canUndo  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
+    const redoStyle = props.canRedo  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
+    const clickDisabled = () => {};
 
     useEffect(() =>{
 		refetch();
@@ -20,8 +23,8 @@ const RegionsHeader = (props) => {
              <WRow style={{ height: "35px", width: "1400px"}}>
              <WCol size="2" >
              <WButton className="map-table-buttons region-add-button" ><i className="material-icons" style={{ fontSize: 35}} onClick={props.createNewRegion}>add_box</i></WButton>
-             <WButton className="map-table-buttons region-material-icons" ><i className="material-icons" style={{ fontSize: 35}} onClick={props.undo}>undo</i></WButton>
-             <WButton className="map-table-buttons region-material-icons"><i className="material-icons" style={{ fontSize: 35}} onClick={props.redo}>redo</i></WButton></WCol>
+             <WButton className={`${undoStyle}`} onClick={props.canUndo ? props.undo : clickDisabled}><i className="material-icons" style={{ fontSize: 35}}>undo</i></WButton>
+             <WButton className={`${redoStyle}`} onClick={props.canRedo ? props.redo : clickDisabled}><i className="material-icons" style={{ fontSize: 35}}>redo</i></WButton></WCol>
              <WCol size="2"></WCol>
              <WCol size="2"><WCHeader class="maps-header-text center">Region Name:</WCHeader>
              </WCol>

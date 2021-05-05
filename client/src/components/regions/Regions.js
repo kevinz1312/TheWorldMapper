@@ -7,6 +7,7 @@ import { GET_DB_SUBREGIONS, GET_DB_MAP_BY_ID} 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
 import { UpdateMapRegions_Transaction } from '../../utils/jsTPS';
+import DeleteMapModal 							from '../modals/DeleteMapModal';
 
 const Regions = (props) => {
     const { currentRegionId } = useParams();
@@ -126,13 +127,21 @@ const Regions = (props) => {
 		return retVal;
 	}
 
+	const canUndo = () => {
+		return props.tps.hasTransactionToUndo();
+	  }
+	
+	const canRedo = () => {
+		return props.tps.hasTransactionToRedo();
+	  }
+
 	useEffect(() =>{
 		refetch();
 	}, []);
 
     return (
          <div class="centered">
-             <RegionsHeader currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} cloneArray={cloneArray}></RegionsHeader>
+             <RegionsHeader currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} canUndo={canUndo()} canRedo={canRedo()}></RegionsHeader>
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             

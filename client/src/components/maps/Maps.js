@@ -120,7 +120,7 @@ const Maps = (props) => {
         updateMapId(_id);
     }
 
-    const setCurrentMapName= (name) =>{
+    const setCurrentMapName = (name) =>{
         updateMapName(name);
     }
 	const setShowCreate = () => {
