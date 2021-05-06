@@ -6,7 +6,7 @@ import { useMutation, useQuery } 		from '@apollo/client';
 import { GET_DB_SUBREGIONS, GET_DB_MAP_BY_ID} 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
-import { UpdateMapRegions_Transaction } from '../../utils/jsTPS';
+import { UpdateMapRegions_Transaction, SortRegions_Transaction } from '../../utils/jsTPS';
 import DeleteMapModal 							from '../modals/DeleteMapModal';
 
 const Regions = (props) => {
@@ -55,8 +55,6 @@ const Regions = (props) => {
 
 	const cloneArray = (oldArray) => {
 		let newArray = [];
-		if((typeof oldArray) === 'undefined')
-			return new Array;
 		for(let i = 0; i< oldArray.length; i++){
 			let tempItem = oldArray[i]
 			newArray.push(tempItem);
@@ -100,6 +98,83 @@ const Regions = (props) => {
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	}
+
+	const sortRegions = async (sortingCriteria) => {
+		let regionsToSort = [...regions];
+		
+		let sortIncreasing = true;
+		if (checkIncreasingOrder(regionsToSort, sortingCriteria))
+			sortIncreasing = false;
+
+		console.log(regionsToSort)
+		let compareFunction = makeCompareFunction(sortingCriteria, sortIncreasing);
+
+		let regionsSorted = [...regions].sort(compareFunction);
+		console.log(regionsSorted)
+
+		const unsortedRegionIds = [...parentRegion.subregions]
+		
+		let sortedRegionIds = []
+		for(let i = 0; i< regionsSorted.length; i++){
+			let tempItem = regionsSorted[i]._id
+			sortedRegionIds.push(tempItem);
+		}
+
+		let transaction = new SortRegions_Transaction(parentRegion._id, unsortedRegionIds, sortedRegionIds, UpdateRegionFieldArray);
+
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+	const cloneRegionsArray = (oldArray) => {
+		let newArray = [];
+		for(let i = 0; i< oldArray.length; i++){
+			let tempItem = {
+				_id: oldArray[i]._id,
+				id: oldArray[i].id,
+				name: oldArray[i].name,
+				owner: oldArray[i].owner,
+				capital: oldArray[i].capital,
+				leader: oldArray[i].leader,
+				flag: oldArray[i].flag,
+				landmarks: cloneArray(oldArray[i].landmarks),
+				subregions: cloneArray(oldArray[i].subregions),
+				root: oldArray[i].root
+			};
+			newArray.push(tempItem);
+		}
+		return newArray;
+	}
+
+	const checkIncreasingOrder = (itemsToTest, sortingCriteria) => {
+		for (let i = 0; i < itemsToTest.length - 1; i++) {
+			if (itemsToTest[i][sortingCriteria] > itemsToTest[i + 1][sortingCriteria])
+			  return false;
+		  }
+		  return true;
+	}
+
+	const makeCompareFunction = (criteria, increasing) => {
+		return function (item1, item2) {
+		  let negate = -1;
+		  if (increasing) {
+			negate = 1;
+		  }
+		  let value1 = item1[criteria];
+		  let value2 = item2[criteria];
+		  if (value1 < value2) {
+			return -1 * negate;
+		  }
+		  else if (value1 === value2) {
+			return 0;
+		  }
+		  else {
+			return 1 * negate;
+		  }
+		}
+	  }
+
+
 	const refetchRegion = async (refetchR) => {
 		const { loading, error, data } = await refetchR();
 		if (data) {
@@ -114,15 +189,16 @@ const Regions = (props) => {
 		}
 	}
 
-
 	const tpsUndo = async () => {
 		const retVal = await props.tps.undoTransaction();
+		refetchRegion(refetchR);
 		refetchRegions(refetch);
 		return retVal;
 	}
 
 	const tpsRedo = async () => {
 		const retVal = await props.tps.doTransaction();
+		refetchRegion(refetchR);
 		refetchRegions(refetch);
 		return retVal;
 	}
@@ -141,7 +217,7 @@ const Regions = (props) => {
 
     return (
          <div class="centered">
-             <RegionsHeader currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} canUndo={canUndo()} canRedo={canRedo()}></RegionsHeader>
+             <RegionsHeader regions={regions} currentRegionId={currentRegionId} createNewRegion={createNewRegion} user={props.user} undo={tpsUndo} redo={tpsRedo} canUndo={canUndo()} canRedo={canRedo()} sortRegions={sortRegions}></RegionsHeader>
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             

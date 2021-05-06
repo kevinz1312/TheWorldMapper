@@ -152,9 +152,10 @@ html, body {
     font-size: 1.375rem;
     font-weight: bold;
     color: $text-color;
+    cursor: default;
 }
 
-.table-header-section:hover {
+.table-header-section-sort:hover {
     transition: 0.1s ease-in-out;
     cursor: pointer;
     background-color: var(--hover-light);

@@ -10,8 +10,12 @@ const RegionsHeader = (props) => {
     if(loading) { console.log(loading, 'loading'); }
     if(error) { console.log(error, 'error'); }
     if(data) { region = data.getMapById; }
+
+    const active = props.regions.length > 0
+
     const undoStyle = props.canUndo  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
     const redoStyle = props.canRedo  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
+    const activeClass = active ? ' table-header-section-sort' : ''
     const clickDisabled = () => {};
 
     useEffect(() =>{
@@ -32,9 +36,9 @@ const RegionsHeader = (props) => {
              </WRow>
              <WRow style={{ height: "8px", width: "1400px"}}></WRow> 
              <WRow style={{ height: "50px", width: "1400px", background: "red"}}>
-             <WCol size="3"><WButton className='table-header-section center' wType="texted" >Name</WButton></WCol>
-             <WCol size="2"><WButton className='table-header-section center' wType="texted" >Capital</WButton></WCol>
-             <WCol size="2"><WButton className='table-header-section center' wType="texted" >Leader</WButton></WCol>
+             <WCol size="3"><WButton className={`table-header-section ${activeClass} center`} wType="texted" onClick={() => active ? props.sortRegions("name") : clickDisabled}>Name</WButton></WCol>
+             <WCol size="2"><WButton className={`table-header-section ${activeClass} center`} wType="texted" onClick={() => active ? props.sortRegions("capital") : clickDisabled}>Capital</WButton></WCol>
+             <WCol size="2"><WButton className={`table-header-section ${activeClass} center`} wType="texted" onClick={() => active ? props.sortRegions("leader") : clickDisabled}>Leader</WButton></WCol>
              <WCol size="2"><WButton className='table-header-section center' wType="texted" >Flag</WButton></WCol>
              <WCol size="3"><WButton className='table-header-section center' wType="texted" >Landmarks</WButton></WCol>
 

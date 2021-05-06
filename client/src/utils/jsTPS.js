@@ -119,21 +119,21 @@ export class UpdateMapRegions_Transaction extends jsTPS_Transaction {
     }
 }
 
-export class SortItems_Transaction extends jsTPS_Transaction{
-    constructor(listID, oldItems, newItems, callback){
+export class SortRegions_Transaction extends jsTPS_Transaction{
+    constructor(parentRegionID, unsortedRegionIds, sortedRegionIds, callback){
         super();
-        this.listID = listID;
-		this.oldItems = oldItems;
-		this.newItems = newItems;
+        this.parentRegionID = parentRegionID;
+		this.unsortedRegionIds = unsortedRegionIds;
+		this.sortedRegionIds = sortedRegionIds;
         this.updateFunction = callback;
     }
 
     async doTransaction(){
-        const { data } = await this.updateFunction({ variables: {_id: this.listID, items: this.newItems }});
+        const { data } = await this.updateFunction({ variables: { _id: this.parentRegionID, field: "subregions", value: this.sortedRegionIds }});
         return data;
     }
     async undoTransaction(){
-        const { data } = await this.updateFunction({ variables: {_id: this.listID, items: this.oldItems }});
+        const { data } = await this.updateFunction({ variables: { _id: this.parentRegionID, field: "subregions", value: this.unsortedRegionIds }});
         return data;
     }
 }
