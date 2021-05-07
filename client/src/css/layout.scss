@@ -57,6 +57,24 @@ html {
     //align-items: center;
 }
 
+.region-viewer-table-text-subregion{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.125rem;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    text-align: left;
+}
+.region-viewer-table-text-region{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.125rem;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    text-align: left;
+}
 .table-entries {
     overflow-y: auto;
 }

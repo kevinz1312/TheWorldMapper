@@ -144,7 +144,24 @@ module.exports = {
 		updateMapField: async (_, args) => {
 			const { field, value, _id } = args;
 			const objectId = new ObjectId(_id);
+			let map = await Map.findOne({_id: objectId})
+			if(field === "owner"){
+				const parentObjectId = new ObjectId(map.owner)
+				const parentMap = await Map.findOne({_id: parentObjectId});
+				let parentSubRegions = parentMap.subregions;
+				const index = parentSubRegions.indexOf(objectId)
+				parentSubRegions.splice(index, 1)
+				const parentUpdated = await Map.updateOne({_id: parentObjectId}, { subregions: parentSubRegions })
+			}
 			const updated = await Map.updateOne({_id: objectId}, {[field]: value});
+			map = await Map.findOne({_id: objectId})
+			if(field === "owner"){
+				const parentObjectId = new ObjectId(map.owner)
+				const newParent = await Map.findOne({_id: parentObjectId})
+				let newParentSubregions = newParent.subregions;
+				newParentSubregions.push(objectId)
+				const parentUpdated = await Map.updateOne({_id: parentObjectId}, { subregions: newParentSubregions })
+			}
 			if(updated) return value;
 			else return "";
 		},

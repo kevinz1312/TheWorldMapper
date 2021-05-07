@@ -2,17 +2,17 @@ import React from 'react';
 
 import { WModal, WMHeader, WMMain, WButton } from 'wt-frontend';
 
-const DeleteMapModal = (props) => {
+const DeleteRegionModal = (props) => {
 
     const handleDelete = async () => {
-        props.deleteMap(props.currentMapId);
+        props.deleteRegion(props.region);
         props.setShowDelete(false);
     }
 
     return (
         <WModal className="delete-modal" visible={true} cover={true}>
             <WMHeader className="modal-header" onClose={() => props.setShowDelete(false)}>
-                Delete Map?
+                Delete?
 			</WMHeader>
 
             <WMMain>
@@ -29,4 +29,4 @@ const DeleteMapModal = (props) => {
     );
 }
 
-export default DeleteMapModal;
+export default DeleteRegionModal;

@@ -23,11 +23,11 @@ const NavbarNavigation = (props) => {
                 <li>
                 <NavbarNavigationEntry
                 key={region._id} name={region.name} _id={region._id} owner={region.owner} user_id={props.user._id}
+                tps={props.tps}
                 /></li>
             )) : <></>
         }
         </div>
     );
 };
-
 export default NavbarNavigation;

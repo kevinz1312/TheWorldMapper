@@ -138,6 +138,43 @@ export class SortRegions_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class ChangeLandmarks_Transaction extends jsTPS_Transaction{
+    constructor(parentRegionID, originalLandmarks, updatedLandmarks, callback){
+        super();
+        this.parentRegionID = parentRegionID;
+		this.originalLandmarks = originalLandmarks;
+		this.updatedLandmarks = updatedLandmarks;
+        this.updateFunction = callback;
+    }
+
+    async doTransaction(){
+        const { data } = await this.updateFunction({ variables: { _id: this.parentRegionID, field: "landmarks", value: this.updatedLandmarks }});
+        return data;
+    }
+    async undoTransaction(){
+        const { data } = await this.updateFunction({ variables: { _id: this.parentRegionID, field: "landmarks", value: this.originalLandmarks }});
+        return data;
+    }
+}
+
+export class ChangeParent_Transaction extends jsTPS_Transaction{
+    constructor(currentRegionId, originalParentId, updatedParentId, callback){
+        super();
+        this.currentRegionId = currentRegionId;
+		this.originalParentId = originalParentId;
+		this.updatedParentId = updatedParentId;
+        this.updateFunction = callback;
+    }
+
+    async doTransaction(){
+        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.updatedParentId }});
+        return data;
+    }
+    async undoTransaction(){
+        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.originalParentId }});
+        return data;
+    }
+}
 
 export class jsTPS {
     constructor() {

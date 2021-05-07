@@ -6,6 +6,7 @@ const NavbarNavigationEntry = (props) => {
 
     const HandleSubRegionRoute = () => {
         history.push("/regions/" + props._id);
+        props.tps.clearAllTransactions();
     }
     
     return (

@@ -1,6 +1,6 @@
 import RegionsTableEntry   from './RegionsTableEntry';
 import { useMutation, useQuery } 		from '@apollo/client';
-import DeleteRegionModal 							from '../modals/DeleteMapModal';
+import DeleteRegionModal 							from '../modals/DeleteRegionModal';
 import React, {useState } 	from 'react';
 
 const RegionsTable = (props) => {
@@ -23,7 +23,7 @@ const RegionsTable = (props) => {
                     <RegionsTableEntry
                         id={region.id} key={region._id} 
                         region={region} editRegion={props.editRegion} deleteRegion={setShowDelete}
-
+                        tps={props.tps}
                         />
                 ))
             }

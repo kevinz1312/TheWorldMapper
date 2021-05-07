@@ -45,7 +45,7 @@ const Navbar = (props) => {
 			{ ((typeof currentRegionId) === 'undefined') || (props.auth === 'false') ?
 			<></>:
 			<ul>
-				<NavbarNavigation currentRegionId = {currentRegionId} user={props.user} auth={props.auth} ></NavbarNavigation>
+				<NavbarNavigation currentRegionId = {currentRegionId} user={props.user} auth={props.auth} tps={props.tps}></NavbarNavigation>
 			</ul>
 			
 			}
@@ -56,6 +56,7 @@ const Navbar = (props) => {
                     fetchUser={props.fetchUser} auth={props.auth} 
                     setShowCreate={setShowCreate} setShowLogin={setShowLogin} setShowUpdate={setShowUpdate}
                     user={props.user}
+
                 />
             </ul>
         </WNavbar>

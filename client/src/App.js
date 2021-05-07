@@ -55,7 +55,7 @@ const App = () => {
 							<WLHeader>
 								<Navbar 
 									fetchUser={refetch} auth={auth}  
-									user={user}/>
+									user={user} tps={transactionStack}/>
 							</WLHeader>
 							<WLMain>
 								<Maps user={user}/>
@@ -71,7 +71,7 @@ const App = () => {
 							<WLHeader>
 								<Navbar 
 									fetchUser={refetch} auth={auth}  
-									user={user}/>
+									user={user} tps={transactionStack}/>
 							</WLHeader>
 							<WLMain>
 								<Regions user={user} tps={transactionStack}/>
@@ -88,10 +88,10 @@ const App = () => {
 							<WLHeader>
 								<Navbar 
 									fetchUser={refetch} auth={auth}  
-									user={user}/>
+									user={user} tps={transactionStack}/>
 							</WLHeader>
 							<WLMain>
-								<RegionViewer user={user}/>
+								<RegionViewer user={user} tps={transactionStack}/>
 							</WLMain>
 							</>
 						} />

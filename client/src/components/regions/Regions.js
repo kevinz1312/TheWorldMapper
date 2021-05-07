@@ -7,7 +7,7 @@ import { GET_DB_SUBREGIONS, GET_DB_MAP_BY_ID} 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
 import { UpdateMapRegions_Transaction, SortRegions_Transaction } from '../../utils/jsTPS';
-import DeleteMapModal 							from '../modals/DeleteMapModal';
+import DeleteRegionModal 							from '../modals/DeleteRegionModal';
 
 const Regions = (props) => {
     const { currentRegionId } = useParams();
@@ -126,26 +126,6 @@ const Regions = (props) => {
 		tpsRedo();
 	}
 
-	const cloneRegionsArray = (oldArray) => {
-		let newArray = [];
-		for(let i = 0; i< oldArray.length; i++){
-			let tempItem = {
-				_id: oldArray[i]._id,
-				id: oldArray[i].id,
-				name: oldArray[i].name,
-				owner: oldArray[i].owner,
-				capital: oldArray[i].capital,
-				leader: oldArray[i].leader,
-				flag: oldArray[i].flag,
-				landmarks: cloneArray(oldArray[i].landmarks),
-				subregions: cloneArray(oldArray[i].subregions),
-				root: oldArray[i].root
-			};
-			newArray.push(tempItem);
-		}
-		return newArray;
-	}
-
 	const checkIncreasingOrder = (itemsToTest, sortingCriteria) => {
 		for (let i = 0; i < itemsToTest.length - 1; i++) {
 			if (itemsToTest[i][sortingCriteria] > itemsToTest[i + 1][sortingCriteria])
@@ -221,7 +201,7 @@ const Regions = (props) => {
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             
-             <RegionsTable regions={regions} editRegion={updateRegionField} deleteRegion={deleteRegion}></RegionsTable>
+             <RegionsTable regions={regions} editRegion={updateRegionField} deleteRegion={deleteRegion} tps={props.tps}></RegionsTable>
              </WCContent>
         </div>
     );

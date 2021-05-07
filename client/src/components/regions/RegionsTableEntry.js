@@ -38,10 +38,12 @@ const RegionsTableEntry = (props) => {
     
     const HandleSubRegionRoute = () => {
         history.push("/regions/" + _id);
+        props.tps.clearAllTransactions()
     }
     
     const HandleRegionViewerRoute = () => {
         history.push("/regionviewer/" + _id);
+        props.tps.clearAllTransactions()
     }
 
     return (
