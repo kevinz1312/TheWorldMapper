@@ -121,6 +121,34 @@ const RegionViewer = (props) => {
         // updateRegionFieldArray(currentRegionId, "landmarks", updatedLandmarks)
     }
 
+    const updateLandmarkName = async (landmark, updatedLandmark) => {
+        const originalLandmarks = [...region.landmarks];
+        if(originalLandmarks.includes(updatedLandmark))
+            alert('Landmark with same name already exists!')
+        else{
+            let updatedLandmarks = [...region.landmarks]
+            const index = updatedLandmarks.indexOf(landmark)
+            updatedLandmarks[index] = new String(updatedLandmark);
+            let transaction = new ChangeLandmarks_Transaction(currentRegionId, originalLandmarks, updatedLandmarks, UpdateRegionFieldArray);
+            props.tps.addTransaction(transaction);
+            await tpsRedo();
+        }
+    }
+
+    const pushSibling = (opcode) => {
+        const siblingRegions = [...parentRegion.subregions];
+        const currentRegion = region._id;
+        const index = siblingRegions.indexOf(currentRegion);
+        if(opcode === 0){
+            props.tps.clearAllTransactions()
+            history.push("/regionviewer/" + siblingRegions[index-1]);
+        }
+        if(opcode === 1){
+            props.tps.clearAllTransactions()
+            history.push("/regionviewer/" + siblingRegions[index+1]);
+        }
+    }
+
 	const updateRegionFieldArray = async (_id, field, value, prev) => {
 		await UpdateRegionFieldArray({ variables: { _id: _id, field: field, value: value }})
         await refetchRegion(refetchR);
@@ -161,6 +189,24 @@ const RegionViewer = (props) => {
 		return props.tps.hasTransactionToRedo();
 	  }
 
+    const canLeft = () =>{
+        if(parentRegion !== ""){
+        const siblingRegions = [...parentRegion.subregions];
+        const currentRegion = region._id;
+        return siblingRegions.indexOf(currentRegion) !== 0;
+        }
+        return false;
+    }
+
+    const canRight = () =>{
+        if(parentRegion !== ""){
+        const siblingRegions = [...parentRegion.subregions];
+        const currentRegion = region._id;
+        return siblingRegions.indexOf(currentRegion) !== siblingRegions.length - 1;
+        }
+        return false;
+    }
+
     const refetchRegion = async (refetchR) => {
 		const { loading, error, data } = await refetchR();
 		if (data) {
@@ -193,10 +239,14 @@ const RegionViewer = (props) => {
     const undoStyle = canUndo()  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
     const redoStyle = canRedo()  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
 
+    const leftStyle = canLeft()  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
+    const rightStyle = canRight()  ? ' map-table-buttons region-material-icons' : ' map-table-buttons-disabled region-material-icons';
+
 	useEffect(() =>{
         refetchR();
         refetchS();
         refetchP();
+        refetchA();
         refetch();
 	}, []);
 
@@ -204,17 +254,26 @@ const RegionViewer = (props) => {
         changeParentRegion(); // using camelCase for variable name is recommended.
       }, [parentRegionInput]);
 
-    return (        
+    return (      
+        <div>
+            <WRow className="center" style={{ height: "45px", width: "1000px"}}>
+            <WCol size="5"></WCol>
+             <WCol size="3" >
+             <WButton className={`${leftStyle}`} onClick={canLeft() ? () => {pushSibling(0)} : () => {clickDisabled()}} ><i className="material-icons" style={{ fontSize: 45}}>arrow_back</i></WButton>
+             <WButton className={`${rightStyle}`} onClick={canRight() ? () => {pushSibling(1)} : () => {clickDisabled()}}><i className="material-icons" style={{ fontSize: 45}}>arrow_forward</i></WButton>
+             </WCol>
+             </WRow>
          <div class="centered">
              <WRow style={{ height: "45px", width: "1000px"}}>
              <WCol size="2" >
              <WButton className={`${undoStyle}`} onClick={canUndo() ? () => {tpsUndo()} : () => {clickDisabled()}} ><i className="material-icons" style={{ fontSize: 45}}>undo</i></WButton>
-             <WButton className={`${redoStyle}`} onClick={canRedo() ? () => {tpsRedo()} : () => {clickDisabled()}}><i className="material-icons" style={{ fontSize: 45}}>redo</i></WButton></WCol>
+             <WButton className={`${redoStyle}`} onClick={canRedo() ? () => {tpsRedo()} : () => {clickDisabled()}}><i className="material-icons" style={{ fontSize: 45}}>redo</i></WButton>
+             </WCol>
              </WRow>
              <WCContent style={{ backgroundColor: "gray", height: "600px", width: "1000px"}}>
              <WRow>
                 <WCol size="6">
-                <WButton className="map-table-buttons region-material-icons center" ><i className="material-icons" style={{ fontSize: 300}}>flag</i></WButton>
+                <WButton className="region-viewer-flag center" ><i className="material-icons" style={{ fontSize: 300}}>flag</i></WButton>
                 <WRow>
                 <WCol size="5">
                 <div className="region-viewer-label-text center">Region Name:</div></WCol>
@@ -228,7 +287,7 @@ const RegionViewer = (props) => {
                     {editingParentRegion ?
                     <form >
                     <label>
-                        <select value={parentRegion.name} onChange={(e) => updateParentRegionInput(e)} name="name" autoFocus>
+                        <select value={parentRegion.name} onChange={(e) => updateParentRegionInput(e)} onBlur={() => {toggleParentRegionEdit(!editingParentRegion)}} name="name" autoFocus>
                             {   ((typeof parentRegions) === 'undefined') ?
 			                    <></>:
                                 parentRegions.map(( region, index) => <option value={region.name} key={index} >{region.name}</option>)
@@ -270,7 +329,7 @@ const RegionViewer = (props) => {
                 { ((typeof region.landmarks) === 'undefined') ?
 			        <></>:
                     <div className=' table-entries center' style={{ backgroundColor: "black", height: "420px", width: "460px"}}>
-				<RegionViewerTable region={region} subRegions={subRegions} deleteLandmark={setShowDelete} ></RegionViewerTable>
+				<RegionViewerTable region={region} subRegions={subRegions} deleteLandmark={setShowDelete} updateLandmarkName={updateLandmarkName}></RegionViewerTable>
                 </div>
 			    }
                 
@@ -295,6 +354,7 @@ const RegionViewer = (props) => {
             {
 				showDelete && (<DeleteLandmarkModal deleteLandmark={deleteLandmark} landmark={currentLandmark} setShowDelete={setShowDelete} />)
 			}
+        </div>
         </div>
     );
 }

@@ -39,11 +39,11 @@ const RegionViewerTable = (props) => {
                             props.region.landmarks.includes(landmark.landmarks) ?
                             <RegionViewerEntry
                             landmark={landmark} subregion={false} deleteLandmark={props.deleteLandmark}
-                            key={index}
+                            key={index} updateLandmarkName={props.updateLandmarkName}
                             /> :
                             <RegionViewerEntry
                             landmark={landmark} subregion={true} deleteLandmark={props.deleteLandmark}
-                            key={index}
+                            key={index} updateLandmarkName={props.updateLandmarkName}
                             />
                             ))
                         
