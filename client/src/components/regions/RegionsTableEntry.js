@@ -1,6 +1,7 @@
 import { WButton, WRow, WCol, WInput } from 'wt-frontend';
 import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } 	from 'react';
+import Regions from './Regions';
 
 const RegionsTableEntry = (props) => {
     const [editingName, toggleNameEdit] = useState(false);
@@ -17,10 +18,84 @@ const RegionsTableEntry = (props) => {
     const flagImage = process.env.PUBLIC_URL + "\\" + flag + " Flag.png";
     const emptyFlagImage = process.env.PUBLIC_URL + "/flag.png";
 
+    let regions = [];
+    regions = props.regions;
+
     if(flag !== props.regionFlag+name){
         props.editFlag(_id, props.regionFlag+name)
     }
 
+    if(props.currentRowEdit.index === props.index){
+        if(props.currentRowEdit.field === "name"){
+            props.setCurrentRow('', '')
+            setTimeout(()=>{toggleNameEdit(true)}, 100)
+        }
+        else if(props.currentRowEdit.field === "capital"){
+            props.setCurrentRow('', '')
+            setTimeout(()=>{toggleCapitalEdit(true)}, 100)
+        }
+        else if(props.currentRowEdit.field === "leader"){
+            props.setCurrentRow('', '')
+            setTimeout(()=>{toggleLeaderEdit(true)}, 100)
+        }
+
+    }
+
+	const checkButtonPressed = (event) => {
+		if(event.key === 'ArrowLeft'){
+            if(editingCapital === true){
+                handleCapitalEdit(event)
+                setTimeout(()=>{toggleNameEdit(true)}, 100)
+            }
+            if(editingLeader === true){
+                handleLeaderEdit(event)
+                setTimeout(()=>{toggleCapitalEdit(true)}, 100)
+            }
+        }
+
+        if(event.key === 'ArrowRight')
+        {
+            if(editingName === true){
+                handleNameEdit(event)
+                toggleCapitalEdit(true)
+            }
+            if(editingCapital === true){
+                handleCapitalEdit(event)
+                toggleLeaderEdit(true)
+            }
+        }
+
+        if(event.key === 'ArrowUp' && props.index !== 0){
+            if(editingName === true){
+                handleNameEdit(event)
+                props.setCurrentRow(props.index-1, "name")
+            }
+            if(editingCapital === true){
+                handleCapitalEdit(event)
+                props.setCurrentRow(props.index-1, "capital")
+            }
+            if(editingLeader === true){
+                handleLeaderEdit(event)
+                props.setCurrentRow(props.index-1, "leader")
+            }
+        }
+
+        if(event.key === 'ArrowDown' && props.index < regions.length - 1){
+            if(editingName === true){
+                handleNameEdit(event)
+                props.setCurrentRow(props.index+1, "name")
+            }
+            if(editingCapital === true){
+                handleCapitalEdit(event)
+                props.setCurrentRow(props.index+1, "capital")
+            }
+            if(editingLeader === true){
+                handleLeaderEdit(event)
+                props.setCurrentRow(props.index+1, "leader")
+            }
+        }
+	}
+    
     const handleNameEdit = (e) => {
         toggleNameEdit(false);
         const newName = e.target.value ? e.target.value : 'Untitled';
@@ -66,14 +141,14 @@ const RegionsTableEntry = (props) => {
                  ? <WInput
                  className='table-input' onBlur={handleNameEdit}
                  autoFocus={true} defaultValue={name} type='text'
-                 wType="outlined" barAnimation="solid" inputClass="table-input-class"
+                 wType="outlined" barAnimation="solid" inputClass="table-input-class" onKeyDown={checkButtonPressed}
                  />
                 : <div className="table-text center"
                 onClick={HandleSubRegionRoute}>{name}</div>
                 }
                 </WCol>
                 <WCol size="1"> 
-                <WButton className=" region-material-icons" onClick={() => toggleNameEdit(!editingName)}><i className="material-icons " >create</i></WButton>
+                <WButton className=" region-material-icons" onClick={() => {toggleNameEdit(!editingName)}}><i className="material-icons " >create</i></WButton>
                 </WCol>
                 </WRow>
             </WCol>
@@ -83,7 +158,7 @@ const RegionsTableEntry = (props) => {
                  ? <WInput
                  className='table-input' onBlur={handleCapitalEdit}
                  autoFocus={true} defaultValue={capital} type='text'
-                 wType="outlined" barAnimation="solid" inputClass="table-input-class"
+                 wType="outlined" barAnimation="solid" inputClass="table-input-class" onKeyDown={checkButtonPressed}
                  />
                 : <div className="table-text center"
                 onClick={() => toggleCapitalEdit(!editingCapital)}>{capital}</div>
@@ -95,7 +170,7 @@ const RegionsTableEntry = (props) => {
                  ? <WInput
                  className='table-input' onBlur={handleLeaderEdit}
                  autoFocus={true} defaultValue={leader} type='text'
-                 wType="outlined" barAnimation="solid" inputClass="table-input-class"
+                 wType="outlined" barAnimation="solid" inputClass="table-input-class" onKeyDown={checkButtonPressed}
                  />
                 : <div className="table-text center"
                 onClick={() => toggleLeaderEdit(!editingLeader)}>{leader}</div>

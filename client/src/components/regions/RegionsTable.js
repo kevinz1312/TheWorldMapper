@@ -6,6 +6,7 @@ import React, {useState } 	from 'react';
 const RegionsTable = (props) => {
     const [showDelete, toggleShowDelete] 	= useState(false);
     const [currentRegion, updateRegion] = useState ("");
+    const [currentRowEdit, setRowEdit] = useState({ index: '', field: ''});
 
 	const setShowDelete = (region) => {
         setCurrentRegion(region);
@@ -15,6 +16,14 @@ const RegionsTable = (props) => {
     const setCurrentRegion = (region) =>{
         updateRegion(region);
     }
+
+    const setCurrentRow = (index, field)=>{
+        setRowEdit({ index: index, field: field});
+    }
+
+    
+
+
     return (
         <div className=' table-entries container-primary'>
             {
@@ -22,8 +31,8 @@ const RegionsTable = (props) => {
                 props.regions.map((region, index) => (
                     <RegionsTableEntry
                         id={region.id} key={region._id} 
-                        region={region} editRegion={props.editRegion} deleteRegion={setShowDelete}
-                        tps={props.tps} regionFlag={props.regionFlag} editFlag={props.editFlag}
+                        region={region} editRegion={props.editRegion} deleteRegion={setShowDelete} currentRowEdit={currentRowEdit} regions={props.regions}
+                        tps={props.tps} regionFlag={props.regionFlag} editFlag={props.editFlag} index={index} setCurrentRow={setCurrentRow}
                         />
                 ))
             }
