@@ -23,7 +23,7 @@ const RegionsTable = (props) => {
                     <RegionsTableEntry
                         id={region.id} key={region._id} 
                         region={region} editRegion={props.editRegion} deleteRegion={setShowDelete}
-                        tps={props.tps}
+                        tps={props.tps} regionFlag={props.regionFlag} editFlag={props.editFlag}
                         />
                 ))
             }

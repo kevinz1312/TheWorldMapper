@@ -21,12 +21,14 @@ const RegionViewerTable = (props) => {
 
     for(let i =0; i < props.subRegions.length; i++){
         if(props.subRegions[i].landmarks.length > 0){
-        let tempItem ={
-            name: props.subRegions[i].name,
-            landmarks: props.subRegions[i].landmarks
-        }
-        totalLandmarks.push(tempItem)
-        }
+            for(let j =0; j < props.subRegions[i].landmarks.length; j++){
+                let tempItem ={
+                    name: props.subRegions[i].name,
+                    landmarks: props.subRegions[i].landmarks[j]
+                }
+                totalLandmarks.push(tempItem)
+                }
+            }
     }
 
     totalLandmarks.sort((a, b) => (a.landmarks > b.landmarks) ? 1 : -1)

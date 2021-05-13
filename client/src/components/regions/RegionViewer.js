@@ -9,18 +9,26 @@ import WCContent from "wt-frontend/build/components/wcard/WCContent";
 import { useHistory } from "react-router-dom";
 import { WRow,WInput,WCol, WButton } from "wt-frontend";
 import { ChangeParent_Transaction, ChangeLandmarks_Transaction } from '../../utils/jsTPS';
-import { updateAncestorRegions } from '../navbar/NavbarNavigation';
 
 const RegionViewer = (props) => {
     const { currentRegionId } = useParams();
     const [showDelete, toggleShowDelete] 	= useState(false);
     const [editingParentRegion, toggleParentRegionEdit] = useState(false);
+    const [editingLandmark, toggleEditingLandmark] = useState(false);
     const [currentLandmark, updateLandmark] = useState ("");
     const [input, setInput] = useState({name: ''});
     const [parentRegionInput, setParentRegionInput] = useState({name: ''});
     const [UpdateRegionFieldArray] 	= useMutation(mutations.UPDATE_MAP_FIELD_ARRAY);
 	const [UpdateRegionField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
-
+	const checkButtonPressed = (event) => {
+		if(event.ctrlKey && event.key === 'z')
+			if(canUndo)
+				tpsUndo();
+		if(event.ctrlKey && event.key === 'y')
+			if(canRedo)
+				tpsRedo();
+	}
+    
     let region = "";
     let subRegions = [];
     let parentRegion = "";
@@ -84,6 +92,7 @@ const RegionViewer = (props) => {
         setInput({
             name: ''
           });
+        toggleEditingLandmark(false)
         }
         else
             alert('Landmark with same name already exists!');
@@ -101,8 +110,6 @@ const RegionViewer = (props) => {
         const updatedParent = parentRegions.find(element => element.name === parentRegionInput.name);
         if(!((typeof updatedParent) === 'undefined')){
         const updatedParentId = updatedParent._id
-        console.log(originalParentId)
-        console.log(updatedParentId)
         let transaction = new ChangeParent_Transaction(currentRegionId, originalParentId, updatedParentId, UpdateRegionField);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
@@ -251,8 +258,15 @@ const RegionViewer = (props) => {
 	}, []);
 
     useEffect(() => {
-        changeParentRegion(); // using camelCase for variable name is recommended.
+        changeParentRegion();
       }, [parentRegionInput]);
+
+    useEffect(() =>{
+		document.addEventListener('keydown', checkButtonPressed);
+		return () => {
+			document.removeEventListener('keydown', checkButtonPressed);
+		};
+	});
 
     return (      
         <div>
@@ -340,8 +354,11 @@ const RegionViewer = (props) => {
                     <WButton className="map-table-buttons region-add-button" ><i className="material-icons" style={{ fontSize: 34}} onClick={createNewLandmark}>add_box</i></WButton>
                     </WCol>
                     <WCol size="4">
-                    <WCContent className="center" style={{ backgroundColor: "black", height: "33px", width: "220px", backgroundColor: "palevioletred"}}>
-                    <WInput className='table-input center' name="name" onChange={updateInput} type='text' wType="outlined" barAnimation="solid" inputClass="table-input-class" value={input.name}/>
+                    <WCContent className="center" style={{height: "33px", width: "220px", backgroundColor: "palevioletred"}} onClick={()=>{toggleEditingLandmark(true)}} >
+                    {editingLandmark ?
+                    <WInput className='table-input center' name="name" onChange={updateInput} type='text' wType="outlined" barAnimation="solid" inputClass="table-input-class" value={input.name} autoFocus={true} onBlur={()=>{if(input.name === "") toggleEditingLandmark(false)}}/>
+                    : <div style={{height: "33px", width: "220px"}} className="region-viewer-parent-region"/>
+                    }
                     </WCContent>
                     </WCol>
                     </WRow>

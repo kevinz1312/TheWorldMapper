@@ -2,7 +2,6 @@ import { WButton, WRow, WCol, WInput } from 'wt-frontend';
 import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } 	from 'react';
 
-
 const RegionsTableEntry = (props) => {
     const [editingName, toggleNameEdit] = useState(false);
     const [editingCapital, toggleCapitalEdit] = useState(false);
@@ -15,11 +14,18 @@ const RegionsTableEntry = (props) => {
     const leader = props.region.leader;
     const flag = props.region.flag;
 
+    const flagImage = process.env.PUBLIC_URL + "\\" + flag + " Flag.png";
+    const emptyFlagImage = process.env.PUBLIC_URL + "/flag.png";
+
+    if(flag !== props.regionFlag+name){
+        props.editFlag(_id, props.regionFlag+name)
+    }
+
     const handleNameEdit = (e) => {
         toggleNameEdit(false);
         const newName = e.target.value ? e.target.value : 'Untitled';
         const prevName = name;
-        props.editRegion(_id, "name", newName, prevName);
+        props.editRegion(_id, "name", newName, prevName, flag, props.regionFlag+newName);
     };
 
     const handleCapitalEdit = (e) => {
@@ -96,7 +102,8 @@ const RegionsTableEntry = (props) => {
                 }
             </WCol>
             <WCol size="2">
-                {       <div className="table-text center">{flag}</div>
+                {
+                <img className="center-flags" src={flagImage} onError={(e)=>{e.target.onError = null; e.target.src = emptyFlagImage}} width="25%" height="65%"/>
                 }
             </WCol>
             <WCol size="3">

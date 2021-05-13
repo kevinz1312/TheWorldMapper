@@ -6,7 +6,7 @@ import { useMutation, useQuery } 		from '@apollo/client';
 import { GET_DB_SUBREGIONS, GET_DB_MAP_BY_ID} 				from '../../cache/queries';
 import RegionsTable from './RegionsTable';
 import WCContent from "wt-frontend/build/components/wcard/WCContent";
-import { UpdateMapRegions_Transaction, SortRegions_Transaction } from '../../utils/jsTPS';
+import { UpdateMapRegions_Transaction, SortRegions_Transaction, UpdateRegionField_Transaction } from '../../utils/jsTPS';
 import DeleteRegionModal 							from '../modals/DeleteRegionModal';
 
 const Regions = (props) => {
@@ -17,6 +17,15 @@ const Regions = (props) => {
     const [DeleteRegion] 			= useMutation(mutations.DELETE_MAP);
 	const [UpdateRegionField] 	= useMutation(mutations.UPDATE_MAP_FIELD);
 	const [UpdateRegionFieldArray] 	= useMutation(mutations.UPDATE_MAP_FIELD_ARRAY);
+
+	const checkButtonPressed = (event) => {
+		if(event.ctrlKey && event.key === 'z')
+			if(canUndo)
+				tpsUndo();
+		if(event.ctrlKey && event.key === 'y')
+			if(canRedo)
+				tpsRedo();
+	}
 
     const { loading: loadingR, error: errorR, data: dataR, refetch: refetchR } = useQuery(GET_DB_MAP_BY_ID, {variables: {_id: currentRegionId}});
     if(loadingR) { console.log(loadingR, 'loading'); }
@@ -40,7 +49,7 @@ const Regions = (props) => {
 			owner: currentRegionId,
             capital: "Untitled",
 			leader: "Untitled",
-			flag: "Flag",
+			flag: parentRegion.flag + '\\',
 			landmarks: [],
 			subregions: [],
 			root: false
@@ -63,13 +72,25 @@ const Regions = (props) => {
 	}
 
 
-	const updateRegionField = async (_id, field, value, prev) => {
+	const updateRegionField = async (_id, field, value, prev, oldFlag, newFlag) => {
 		if(value !== prev){
-            await UpdateRegionField({ variables: { _id: _id, field: field, value: value }})
+			let transaction;
+			field === "name" ?
+				transaction = new UpdateRegionField_Transaction(_id, field, prev, value, UpdateRegionField, oldFlag, newFlag)
+				:
+				transaction = new UpdateRegionField_Transaction(_id, field, prev, value, UpdateRegionField)
+			props.tps.addTransaction(transaction);
+			await tpsRedo();
+
+            // await UpdateRegionField({ variables: { _id: _id, field: field, value: value }})
 		}
-		await refetchRegions(refetch);
+		// await refetchRegions(refetch);
 	};
 
+	const editRegionFlag = async (_id, flag) => {
+		await UpdateRegionField({ variables: { _id: _id, field: "flag", value: flag }})
+		await refetchRegions(refetch);
+	}
 
 	const updateRegionFieldArray = async (_id, field, value, prev) => {
 		await UpdateRegionFieldArray({ variables: { _id: _id, field: field, value: value }})
@@ -192,8 +213,11 @@ const Regions = (props) => {
 	  }
 
 	useEffect(() =>{
-		refetch();
-	}, []);
+		document.addEventListener('keydown', checkButtonPressed);
+		return () => {
+			document.removeEventListener('keydown', checkButtonPressed);
+		};
+	});
 
     return (
          <div class="centered">
@@ -201,7 +225,7 @@ const Regions = (props) => {
 
              <WCContent style={{ backgroundColor: "lightgray", height: "400px"}}>
             
-             <RegionsTable regions={regions} editRegion={updateRegionField} deleteRegion={deleteRegion} tps={props.tps}></RegionsTable>
+             <RegionsTable regions={regions} editRegion={updateRegionField} deleteRegion={deleteRegion} tps={props.tps} regionFlag={parentRegion.flag + '\\'} editFlag={editRegionFlag}></RegionsTable>
              </WCContent>
         </div>
     );

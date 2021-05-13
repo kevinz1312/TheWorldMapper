@@ -43,7 +43,7 @@ const Maps = (props) => {
 			owner: props.user._id,
 			capital: '',
 			leader: '',
-			flag: '',
+			flag: name,
 			landmarks: [],
 			subregions: [],
 			root: true

@@ -36,7 +36,7 @@ const RegionViewerEntry = (props) => {
                  />
         :
 
-        <div className="region-viewer-table-text-region" onClick={()=>{toggleNameEdit(true);}}>{props.landmark.landmarks}</div>
+        <div className="region-viewer-table-text-region region-viewer-editable-landmark" onClick={()=>{toggleNameEdit(true);}}>{props.landmark.landmarks}</div>
         }
         </WCol>
 </WRow>

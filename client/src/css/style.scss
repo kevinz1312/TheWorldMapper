@@ -328,3 +328,9 @@ html, body {
 .region-viewer-table-text-region{
     color: white
 }
+
+.region-viewer-editable-landmark:hover{
+    cursor: pointer;
+    background-color: var(--hover-light);
+
+}

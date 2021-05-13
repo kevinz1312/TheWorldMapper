@@ -4,84 +4,31 @@ export class jsTPS_Transaction {
     undoTransaction () {};
 }
 /*  Handles list name changes, or any other top level details of a todolist that may be added   */
-export class UpdateListField_Transaction extends jsTPS_Transaction {
-    constructor(_id, field, prev, update, callback) {
+export class UpdateRegionField_Transaction extends jsTPS_Transaction {
+    constructor(_id, field, prev, value, callback, oldFlag, newFlag) {
         super();
         this.prev = prev;
-        this.update = update;
+        this.update = value;
         this.field = field;
         this._id = _id;
         this.updateFunction = callback;
+        this.oldFlag = oldFlag;
+        this.newFlag = newFlag;
     }
     async doTransaction() {
 		const { data } = await this.updateFunction({ variables: { _id: this._id, field: this.field, value: this.update }});
+        if(this.field === "name")
+            await this.updateFunction({ variables: { _id: this._id, field: "flag", value: this.newFlag }});
 		return data;
     }
     async undoTransaction() {
         const { data } = await this.updateFunction({ variables: { _id: this._id, field: this.field, value: this.prev }});
+        if(this.field === "name")
+            await this.updateFunction({ variables: { _id: this._id, field: "flag", value: this.oldFlag }});
 		return data;
     }
 }
 
-/*  Handles item reordering */
-export class ReorderItems_Transaction extends jsTPS_Transaction {
-    constructor(listID, itemID, dir, callback) {
-        super();
-        this.listID = listID;
-        this.itemID = itemID;
-		this.dir = dir;
-		this.revDir = dir === 1 ? -1 : 1;
-		this.updateFunction = callback;
-	}
-
-    async doTransaction() {
-		const { data } = await this.updateFunction({ variables: { itemId: this.itemID, _id: this.listID, direction: this.dir }});
-		return data;
-    }
-
-    async undoTransaction() {
-		const {data} = await this.updateFunction({ variables: { itemId: this.itemID, _id: this.listID, direction: this.revDir }});
-		return data;
-
-    }
-    
-}
-
-export class EditItem_Transaction extends jsTPS_Transaction {
-	constructor(listID, itemID, field, prev, update, flag, callback) {
-		super();
-		this.listID = listID;
-		this.itemID = itemID;
-		this.field = field;
-		this.prev = prev;
-		this.update = update;
-		this.flag = flag;
-		this.updateFunction = callback;
-	}	
-
-	async doTransaction() {
-		const { data } = await this.updateFunction({ 
-				variables:{  itemId: this.itemID, _id: this.listID, 
-							 field: this.field, value: this.update, 
-							 flag: this.flag 
-						  }
-			});
-		return data;
-    }
-
-    async undoTransaction() {
-		const { data } = await this.updateFunction({ 
-				variables:{ itemId: this.itemID, _id: this.listID, 
-							field: this.field, value: this.prev, 
-							flag: this.flag 
-						  }
-			});
-		return data;
-
-    }
-}
-
-/*  Handles create/delete of list items */
 export class UpdateMapRegions_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 
     constructor(ownerID, regionID, region, opcode, addfunc, delfunc, index = -1) {
