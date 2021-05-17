@@ -105,8 +105,9 @@ export class ChangeLandmarks_Transaction extends jsTPS_Transaction{
 }
 
 export class ChangeParent_Transaction extends jsTPS_Transaction{
-    constructor(currentRegionId, originalParentId, updatedParentId, callback){
+    constructor(currentRegionId, originalParentId, updatedParentId, callback, index = -1){
         super();
+        this.index = index;
         this.currentRegionId = currentRegionId;
 		this.originalParentId = originalParentId;
 		this.updatedParentId = updatedParentId;
@@ -114,11 +115,11 @@ export class ChangeParent_Transaction extends jsTPS_Transaction{
     }
 
     async doTransaction(){
-        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.updatedParentId }});
+        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.updatedParentId, index: -1}});
         return data;
     }
     async undoTransaction(){
-        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.originalParentId }});
+        const { data } = await this.updateFunction({ variables: { _id: this.currentRegionId, field: "owner", value: this.originalParentId, index: this.index }});
         return data;
     }
 }

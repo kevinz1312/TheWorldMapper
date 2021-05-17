@@ -35,7 +35,7 @@ const typeDefs = gql `
 	extend type Mutation {
 		addMap(map: MapInput!, index: Int): String
 		deleteMap(_id: String!): Boolean
-		updateMapField(_id: String!, field: String!, value: String!): String
+		updateMapField(_id: String!, field: String!, value: String!, index: Int): String
 		updateMapFieldArray(_id: String!, field: String!, value: [String]): Boolean
 	}
 `;

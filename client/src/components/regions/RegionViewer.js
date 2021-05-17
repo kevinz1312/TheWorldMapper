@@ -110,10 +110,11 @@ const RegionViewer = (props) => {
         const updatedParent = parentRegions.find(element => element.name === parentRegionInput.name);
         if(!((typeof updatedParent) === 'undefined')){
         const updatedParentId = updatedParent._id
-        let transaction = new ChangeParent_Transaction(currentRegionId, originalParentId, updatedParentId, UpdateRegionField);
+        const siblingRegions = [...parentRegion.subregions];
+        const index = siblingRegions.indexOf(currentRegionId)
+        let transaction = new ChangeParent_Transaction(currentRegionId, originalParentId, updatedParentId, UpdateRegionField, index);
 		props.tps.addTransaction(transaction);
 		await tpsRedo();
-        await refetchA();
         }
     }
 
@@ -175,6 +176,7 @@ const RegionViewer = (props) => {
 		await refetchRegion(refetchR);
 		await refetchSubRegions(refetchS);
         await refetchParentRegion(refetchP)
+        await refetchA();
         await refetchParentRegions(refetch)
 		return retVal;
 	}
@@ -184,6 +186,7 @@ const RegionViewer = (props) => {
 		await refetchRegion(refetchR);
 		await refetchSubRegions(refetchS);
         await refetchParentRegion(refetchP)
+        await refetchA();
         await refetchParentRegions(refetch)
 		return retVal;
 	}
@@ -314,7 +317,7 @@ const RegionViewer = (props) => {
                     }
                 </WCol>
                 <WCol size="1"> 
-                <WButton className=" region-material-icons" ><i className="material-icons " onClick={() => toggleParentRegionEdit(!editingParentRegion)} >create</i></WButton>
+                <WButton className=" region-material-icons" onClick={() => toggleParentRegionEdit(!editingParentRegion)}><i className="material-icons " >create</i></WButton>
                 </WCol>
                 </WRow>
                 <WRow>

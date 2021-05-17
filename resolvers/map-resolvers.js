@@ -142,7 +142,7 @@ module.exports = {
 			@returns {boolean} true on successful update, false on failure
 		**/
 		updateMapField: async (_, args) => {
-			const { field, value, _id } = args;
+			const { field, value, _id, index } = args;
 			const objectId = new ObjectId(_id);
 			let map = await Map.findOne({_id: objectId})
 			if(field === "owner"){
@@ -159,7 +159,12 @@ module.exports = {
 				const parentObjectId = new ObjectId(map.owner)
 				const newParent = await Map.findOne({_id: parentObjectId})
 				let newParentSubregions = newParent.subregions;
-				newParentSubregions.push(objectId)
+				if(index === -1)
+					newParentSubregions.push(objectId)
+				else{
+					console.log(index)
+					newParentSubregions.splice(index, 0, objectId)
+				}
 				const parentUpdated = await Map.updateOne({_id: parentObjectId}, { subregions: newParentSubregions })
 			}
 			if(updated) return value;
