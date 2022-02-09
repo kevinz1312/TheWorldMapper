@@ -20,8 +20,8 @@ The World Data Mapper is a full stack web application for managing regional data
 
   ```
 	- Copy the data from the "Connect your application" connection method within MongoDB.
-  - Replace <password> (including the angle brackets) with your password for the database user, replace myFirstDatabase with the database name. 
-  - It should look something like this: MONGO_URI = "mongodb+srv....
+	- Replace <password> (including the angle brackets) with your password for the database user, replace myFirstDatabase with the database name. 
+	- It should look something like this: MONGO_URI = "mongodb+srv....
   ```
 
 - Installing Modules
