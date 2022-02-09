@@ -1,6 +1,39 @@
-# CSE316-Spring21-HW3
-##### Authors: Justin Fagan and Charlie Monnone
-### Getting Started
+# The World Mapper
+#### Author: Kevin Zhou
+
+## Description
+
+The World Data Mapper is a full stack web application for managing regional data around the world. Data can be organized hierarchially and allows the user to organize different regions. Subregions can be created and contained under a parent region. For example, "New York" and "California" can be created as subregions under the parent region "United States." Each region's name, capital, leader, and landmarks can be created and edited within the application.
+
+## Getting Started
+
+- Node.js must be installed
+- Setting up MongoDB database
+
+  ```
+	- Create a MongoDB account.
+	- Create a new organization, a new project within this organization, and a new cluster within this project by selecting the free tier option.
+	- When the cluster is finished configuring, click "connect" and add your IP address. 
+  ```
+
+- Edit the .env file to connect your own MongoDB database
+
+  ```
+	- Copy the data from the "Connect your application" connection method within MongoDB.
+  - Replace <password> (including the angle brackets) with your password for the database user, replace myFirstDatabase with the database name. 
+  - It should look something like this: MONGO_URI = "mongodb+srv....
+  ```
+
+- Installing Modules
+  ```
+	- In the root directory run npm install
+	- Go to the client directory(./client) using cd client and run npm install again.
+	- Return to the root directory using cd ..
+	- Run "npm start" in the root directory to start the application
+  ```
+
+## More Information
+
 ##### Configuring .env
 NOTE: In a full production application, an environment file would not be stored in a git repository. This file contains information vital to the security of the application, and should not be publicly available. For the sake of ease/learning, this .env is included in the repository, but do not do this in general.
 
